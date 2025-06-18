@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Trilhas da Amazônia Triunfo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* O CSS é o mesmo do register.html, você pode copiar e colar aqui */
+        :root {
+            --cor-primaria: #4F2683;
+            --cor-secundaria: #6a4a99;
+            --cor-texto: #333;
+            --cor-branca: #fff;
+            --cor-destaque: #00892C;
+            --cor-sucesso: #00892C;
+            --cor-aviso: #FF9800;
+            --cor-erro: #F44336;
+            --sombra-suave: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(79, 38, 131, 0.85), rgba(79, 38, 131, 0.85)), url('https://trilhasdaamazonia.com.br/uploads/banners/banner-01-copiar.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .auth-container {
+            background-color: var(--cor-branca);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-suave);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            color: var(--cor-primaria);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .auth-container input[type="text"],
+        .auth-container input[type="email"],
+        .auth-container input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+
+        .auth-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--cor-destaque);
+            color: var(--cor-branca);
+            border: none;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-container button:hover {
+            background-color: #006d22;
+        }
+
+        .auth-container .message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--cor-texto);
+        }
+
+        .auth-container .message a {
+            color: var(--cor-primaria);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-container .message a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--cor-erro);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Seu Email">
+        <input type="password" id="login-password" placeholder="Sua Senha">
+        <button id="login-btn">Entrar</button>
+        <p id="login-error-message" class="error-message"></p>
+        <p class="message">Não tem uma conta? <a href="register.html">Crie uma aqui</a></p>
+        <p class="message"><a href="#" id="forgot-password-link">Esqueceu a senha?</a></p>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

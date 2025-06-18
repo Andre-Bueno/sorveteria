@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Sorveteria</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <div id="app" class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Painel de Administração</h1>
+            <p class="text-gray-600 mt-2">Gerencie os produtos e itens adicionais da sua sorveteria.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Coluna de Produtos -->
+            <section id="products-section">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Adicionar Novo Produto</h2>
+                    <form id="addProductForm" class="space-y-4">
+                        <input id="productName" type="text" placeholder="Nome do Produto (ex: Açaí Trufado)"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                        <textarea id="productDescription" placeholder="Descrição"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                        <input id="productPrice" type="number" step="0.01" placeholder="Preço (ex: 19.90)"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                        <input id="productImage" type="url" placeholder="URL da Imagem"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <button type="submit"
+                            class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-plus-circle mr-2"></i>Adicionar Produto
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Lista de Produtos</h2>
+                    <div id="productList" class="space-y-4">
+                        <!-- Products will be dynamically inserted here -->
+                        <p id="loading-products" class="text-gray-500">Verificando permissões...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Coluna de Itens Adicionais -->
+            <section id="adicionais-section">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Adicionar Item Adicional</h2>
+                    <form id="addAdicionalForm" class="space-y-4">
+                        <input id="adicionalName" type="text" placeholder="Nome do Adicional (ex: Granola)"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        <input id="adicionalPrice" type="number" step="0.01" placeholder="Preço (ex: 2.50)"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        <button type="submit"
+                            class="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                            <i class="fas fa-plus-circle mr-2"></i>Adicionar Item
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Itens Adicionais</h2>
+                    <div id="adicionalList" class="space-y-2">
+                        <!-- Adicionais will be dynamically inserted here -->
+                        <p id="loading-adicionais" class="text-gray-500">Verificando permissões...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+        <div class="modal-backdrop fixed inset-0" onclick="hideModal()"></div>
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg z-10 mx-4">
+            <h2 class="text-2xl font-semibold mb-6">Editar Item</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <input type="hidden" id="editType">
+                <div class="space-y-4">
+                    <input id="editName" type="text" placeholder="Nome" class="w-full p-3 border rounded-lg" required>
+                    <textarea id="editDescription" placeholder="Descrição"
+                        class="w-full p-3 border rounded-lg"></textarea>
+                    <input id="editPrice" type="number" step="0.01" placeholder="Preço"
+                        class="w-full p-3 border rounded-lg" required>
+                    <input id="editImage" type="url" placeholder="URL da Imagem" class="w-full p-3 border rounded-lg">
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" onclick="hideModal()"
+                        class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
+                    <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">
+                        <i class="fas fa-save mr-2"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
+            authDomain: "bdsorveteria-2690d.firebaseapp.com",
+            projectId: "bdsorveteria-2690d",
+            storageBucket: "bdsorveteria-2690d.firebasestorage.app",
+            messagingSenderId: "1004178621874",
+            appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
+            measurementId: "G-SMW22TX942"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- AUTHENTICATION (FIXED) ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in, now we must verify they are an admin
+                const userDocRef = doc(db, "users", user.uid);
+                try {
+                    const docSnap = await getDoc(userDocRef);
+                    if (docSnap.exists() && docSnap.data().role === 'admin') {
+                        // User is an admin, proceed to load the panel data
+                        console.log("Admin user verified:", user.uid);
+                        document.getElementById('loading-products').textContent = 'Carregando produtos...';
+                        document.getElementById('loading-adicionais').textContent = 'Carregando itens adicionais...';
+                        listenToData();
+                    } else {
+                        // User is not an admin or their document doesn't exist
+                        console.log("Access denied. User is not an admin. Redirecting...");
+                        // In a real app, you might show a message before redirecting
+                        window.location.href = 'login.html'; // Redirect to login page
+                    }
+                } catch (error) {
+                    console.error("Error verifying admin role:", error);
+                    window.location.href = 'login.html';
+                }
+            } else {
+                // No user is signed in. Redirect to login page immediately.
+                console.log("No user signed in. Redirecting to login.");
+                window.location.href = 'login.html';
+            }
+        });
+
+
+        // --- DATABASE REFERENCES ---
+        const productsCollectionRef = collection(db, "produtos");
+        const adicionaisCollectionRef = collection(db, "adicionais");
+
+        // --- DOM ELEMENTS ---
+        const productList = document.getElementById('productList');
+        const adicionalList = document.getElementById('adicionalList');
+        const loadingProducts = document.getElementById('loading-products');
+        const loadingAdicionais = document.getElementById('loading-adicionais');
+
+        // --- RENDER FUNCTIONS ---
+        const formatPrice = (price) => `R$ ${Number(price).toFixed(2).replace('.', ',')}`;
+
+        const renderProducts = (products) => {
+            productList.innerHTML = '';
+            if (products.length === 0) {
+                loadingProducts.textContent = 'Nenhum produto cadastrado.';
+                productList.appendChild(loadingProducts);
+                return;
+            }
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'bg-white rounded-lg shadow-md p-4 flex items-center gap-4';
+                item.innerHTML = `
+                    <img src="${p.imagen_url || 'https://placehold.co/100x100/e2e8f0/cbd5e0?text=Sem+Foto'}" alt="${p.nome}" class="w-20 h-20 object-cover rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x100/e2e8f0/cbd5e0?text=Erro';">
+                    <div class="flex-grow">
+                        <h3 class="font-bold text-lg">${p.nome}</h3>
+                        <p class="text-sm text-gray-600">${p.descricao || 'Sem descrição'}</p>
+                        <p class="font-semibold text-green-600 mt-1">${formatPrice(p.preco)}</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="openEditModal('product', '${p.id}')" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem('product', '${p.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                productList.appendChild(item);
+            });
+        };
+
+        const renderAdicionais = (adicionais) => {
+            adicionalList.innerHTML = '';
+            if (adicionais.length === 0) {
+                loadingAdicionais.textContent = 'Nenhum item adicional cadastrado.';
+                adicionalList.appendChild(loadingAdicionais);
+                return;
+            }
+            adicionais.forEach(a => {
+                const item = document.createElement('div');
+                item.className = 'bg-white rounded-lg shadow-sm p-3 flex justify-between items-center';
+                item.innerHTML = `
+                    <div>
+                        <span class="font-semibold">${a.nome}</span>
+                        <span class="text-gray-500 ml-2">${formatPrice(a.preco)}</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="openEditModal('adicional', '${a.id}')" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem('adicional', '${a.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                adicionalList.appendChild(item);
+            });
+        };
+
+        // --- DATA LISTENERS ---
+        function listenToData() {
+            onSnapshot(query(productsCollectionRef), (snapshot) => {
+                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                window.allProducts = products; // Store for editing
+                renderProducts(products.sort((a, b) => a.nome.localeCompare(b.nome)));
+                if (loadingProducts) loadingProducts.style.display = 'none';
+            });
+            onSnapshot(query(adicionaisCollectionRef), (snapshot) => {
+                const adicionais = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                window.allAdicionais = adicionais; // Store for editing
+                renderAdicionais(adicionais.sort((a, b) => a.nome.localeCompare(b.nome)));
+                if (loadingAdicionais) loadingAdicionais.style.display = 'none';
+            });
+        }
+
+        // --- ADD FORMS LOGIC ---
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                nome: document.getElementById('productName').value,
+                descricao: document.getElementById('productDescription').value,
+                preco: parseFloat(document.getElementById('productPrice').value),
+                imagen_url: document.getElementById('productImage').value,
+                createdAt: serverTimestamp()
+            };
+            try {
+                await addDoc(productsCollectionRef, formData);
+                e.target.reset();
+            } catch (error) { console.error("Error adding product: ", error); }
+        });
+
+        document.getElementById('addAdicionalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                nome: document.getElementById('adicionalName').value,
+                preco: parseFloat(document.getElementById('adicionalPrice').value)
+            };
+            try {
+                await addDoc(adicionaisCollectionRef, formData);
+                e.target.reset();
+            } catch (error) { console.error("Error adding adicional: ", error); }
+        });
+
+        // --- EDIT & DELETE (GLOBAL FUNCTIONS) ---
+        window.deleteItem = async (type, id) => {
+            if (!confirm('Tem certeza que deseja deletar este item?')) return;
+            const docRef = doc(db, type === 'product' ? 'produtos' : 'adicionais', id);
+            try {
+                await deleteDoc(docRef);
+            } catch (error) { console.error("Error deleting item:", error); }
+        };
+
+        const editModal = document.getElementById('editModal');
+        const editForm = document.getElementById('editForm');
+
+        window.hideModal = () => editModal.classList.add('hidden');
+
+        window.openEditModal = (type, id) => {
+            const isProduct = type === 'product';
+            const item = isProduct ? window.allProducts.find(p => p.id === id) : window.allAdicionais.find(a => a.id === id);
+
+            if (!item) return;
+
+            // Populate form
+            editForm.elements.editId.value = id;
+            editForm.elements.editType.value = type;
+            editForm.elements.editName.value = item.nome;
+            editForm.elements.editPrice.value = item.preco;
+
+            // Show/hide fields based on type
+            editForm.elements.editDescription.style.display = isProduct ? 'block' : 'none';
+            editForm.elements.editImage.style.display = isProduct ? 'block' : 'none';
+
+            if (isProduct) {
+                editForm.elements.editDescription.value = item.descricao || '';
+                editForm.elements.editImage.value = item.imagen_url || '';
+            }
+
+            editModal.classList.remove('hidden');
+            editModal.classList.add('flex', 'items-center', 'justify-center');
+        };
+
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = e.target.elements.editId.value;
+            const type = e.target.elements.editType.value;
+            const isProduct = type === 'product';
+
+            const collectionName = isProduct ? 'produtos' : 'adicionais';
+            const docRef = doc(db, collectionName, id);
+
+            const dataToUpdate = {
+                nome: e.target.elements.editName.value,
+                preco: parseFloat(e.target.elements.editPrice.value)
+            };
+
+            if (isProduct) {
+                dataToUpdate.descricao = e.target.elements.editDescription.value;
+                dataToUpdate.imagen_url = e.target.elements.editImage.value;
+            }
+
+            try {
+                await updateDoc(docRef, dataToUpdate);
+                hideModal();
+            } catch (error) { console.error('Error updating item:', error); }
+        });
+
+    </script>
+</body>
+
+</html>

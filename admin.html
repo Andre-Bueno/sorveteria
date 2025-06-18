@@ -44,16 +44,19 @@
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
                         <input id="productImage" type="url" placeholder="URL da Imagem"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
-
+                        
                         <input id="productCategory" type="text" placeholder="Categoria (ex: Açaís, Mais Vendidos)"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
 
                         <div>
-                            <label for="productAdicionais" class="block mb-2 font-semibold text-gray-700">Vincular
-                                Adicionais:</label>
-                            <select id="productAdicionais" multiple
-                                class="w-full p-3 border rounded-lg h-32 focus:ring-2 focus:ring-blue-500">
-                            </select>
+                            <label class="block mb-2 font-semibold text-gray-700">Vincular Adicionais:</label>
+                            <div id="productAdicionaisContainer" class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
+                                </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input id="productAvailable" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+                            <label for="productAvailable" class="ml-2 block text-sm font-medium text-gray-900">Disponível para venda</label>
                         </div>
 
                         <button type="submit"
@@ -105,23 +108,25 @@
                 <input type="hidden" id="editType">
                 <div class="space-y-4">
                     <input id="editName" type="text" placeholder="Nome" class="w-full p-3 border rounded-lg" required>
-
+                    
                     <div id="edit-product-fields">
-                        <textarea id="editDescription" placeholder="Descrição"
-                            class="w-full p-3 border rounded-lg"></textarea>
-                        <input id="editImage" type="url" placeholder="URL da Imagem"
-                            class="w-full p-3 border rounded-lg mt-4">
-                        <input id="editCategory" type="text" placeholder="Categoria"
-                            class="w-full p-3 border rounded-lg mt-4">
+                        <textarea id="editDescription" placeholder="Descrição" class="w-full p-3 border rounded-lg"></textarea>
+                        <input id="editImage" type="url" placeholder="URL da Imagem" class="w-full p-3 border rounded-lg mt-4">
+                        <input id="editCategory" type="text" placeholder="Categoria" class="w-full p-3 border rounded-lg mt-4">
+                        
                         <div class="mt-4">
-                            <label for="editAdicionais" class="block mb-2 font-semibold text-gray-700">Adicionais
-                                Vinculados:</label>
-                            <select id="editAdicionais" multiple class="w-full p-3 border rounded-lg h-32"></select>
+                            <label class="block mb-2 font-semibold text-gray-700">Adicionais Vinculados:</label>
+                            <div id="editAdicionaisContainer" class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
+                                </div>
+                        </div>
+
+                        <div class="flex items-center mt-4">
+                            <input id="editAvailable" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="editAvailable" class="ml-2 block text-sm font-medium text-gray-900">Disponível para venda</label>
                         </div>
                     </div>
-
-                    <input id="editPrice" type="number" step="0.01" placeholder="Preço"
-                        class="w-full p-3 border rounded-lg" required>
+                    
+                    <input id="editPrice" type="number" step="0.01" placeholder="Preço" class="w-full p-3 border rounded-lg" required>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
                     <button type="button" onclick="hideModal()"
@@ -137,8 +142,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // ... (Configuração do Firebase permanece a mesma) ...
         const firebaseConfig = {
             apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
             authDomain: "bdsorveteria-2690d.firebaseapp.com",
@@ -160,20 +166,14 @@
                 try {
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists() && docSnap.data().role === 'admin') {
-                        console.log("Admin user verified:", user.uid);
-                        document.getElementById('loading-products').textContent = 'Carregando produtos...';
-                        document.getElementById('loading-adicionais').textContent = 'Carregando itens adicionais...';
                         listenToData();
                     } else {
-                        console.log("Access denied. User is not an admin. Redirecting...");
                         window.location.href = 'login.html';
                     }
                 } catch (error) {
-                    console.error("Error verifying admin role:", error);
                     window.location.href = 'login.html';
                 }
             } else {
-                console.log("No user signed in. Redirecting to login.");
                 window.location.href = 'login.html';
             }
         });
@@ -185,10 +185,8 @@
         // --- DOM ELEMENTS ---
         const productList = document.getElementById('productList');
         const adicionalList = document.getElementById('adicionalList');
-        const loadingProducts = document.getElementById('loading-products');
-        const loadingAdicionais = document.getElementById('loading-adicionais');
-        const productAdicionaisSelect = document.getElementById('productAdicionais');
-        const editAdicionaisSelect = document.getElementById('editAdicionais');
+        const productAdicionaisContainer = document.getElementById('productAdicionaisContainer');
+        const editAdicionaisContainer = document.getElementById('editAdicionaisContainer');
 
 
         // --- RENDER FUNCTIONS ---
@@ -196,24 +194,26 @@
 
         const renderProducts = (products) => {
             productList.innerHTML = '';
-            if (products.length === 0) {
-                loadingProducts.textContent = 'Nenhum produto cadastrado.';
-                productList.appendChild(loadingProducts);
-                return;
-            }
             products.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'bg-white rounded-lg shadow-md p-4 flex items-start gap-4';
-
+                
                 const adicionaisText = p.adicionais_disponiveis && p.adicionais_disponiveis.length > 0
                     ? p.adicionais_disponiveis.join(', ')
                     : 'Nenhum';
 
+                const statusHtml = p.disponivel === true
+                    ? `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Disponível</span>`
+                    : `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Indisponível</span>`;
+
                 item.innerHTML = `
                     <img src="${p.imagen_url || 'https://placehold.co/100x100/e2e8f0/cbd5e0?text=Sem+Foto'}" alt="${p.nome}" class="w-20 h-20 object-cover rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x100/e2e8f0/cbd5e0?text=Erro';">
                     <div class="flex-grow">
-                        <h3 class="font-bold text-lg">${p.nome}</h3>
-                        <p class="text-sm text-gray-600">${p.descricao || 'Sem descrição'}</p>
+                        <div class="flex justify-between items-start">
+                             <h3 class="font-bold text-lg">${p.nome}</h3>
+                             ${statusHtml}
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">${p.descricao || 'Sem descrição'}</p>
                         <p class="font-semibold text-green-600 mt-1">${formatPrice(p.preco)}</p>
                         <div class="mt-2 text-xs">
                             <p><strong class="text-gray-800">Categoria:</strong> <span class="text-blue-600 font-medium">${p.categoria || 'Nenhuma'}</span></p>
@@ -230,12 +230,8 @@
         };
 
         const renderAdicionais = (adicionais) => {
+            // ... (função renderAdicionais permanece a mesma) ...
             adicionalList.innerHTML = '';
-            if (adicionais.length === 0) {
-                loadingAdicionais.textContent = 'Nenhum item adicional cadastrado.';
-                adicionalList.appendChild(loadingAdicionais);
-                return;
-            }
             adicionais.forEach(a => {
                 const item = document.createElement('div');
                 item.className = 'bg-white rounded-lg shadow-sm p-3 flex justify-between items-center';
@@ -259,21 +255,26 @@
                 const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 window.allProducts = products;
                 renderProducts(products.sort((a, b) => a.nome.localeCompare(b.nome)));
-                if (loadingProducts) loadingProducts.style.display = 'none';
             });
 
             onSnapshot(query(adicionaisCollectionRef), (snapshot) => {
                 const adicionais = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 window.allAdicionais = adicionais;
                 renderAdicionais(adicionais.sort((a, b) => a.nome.localeCompare(b.nome)));
-                if (loadingAdicionais) loadingAdicionais.style.display = 'none';
-
-                productAdicionaisSelect.innerHTML = '';
-                editAdicionaisSelect.innerHTML = '';
-                adicionais.forEach(ad => {
-                    const option = `<option value="${ad.nome}">${ad.nome} - ${formatPrice(ad.preco)}</option>`;
-                    productAdicionaisSelect.innerHTML += option;
-                    editAdicionaisSelect.innerHTML += option;
+                
+                // ATUALIZADO: Popula os containers com checkboxes estilizados
+                productAdicionaisContainer.innerHTML = '';
+                editAdicionaisContainer.innerHTML = '';
+                adicionais.forEach((ad, index) => {
+                    const checkboxId = `adicional-checkbox-${index}`;
+                    const itemHtml = `
+                        <label for="${checkboxId}" class="flex items-center p-2 rounded-md hover:bg-gray-200 cursor-pointer transition-colors">
+                            <input id="${checkboxId}" type="checkbox" value="${ad.nome}" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-sm text-gray-800">${ad.nome} - ${formatPrice(ad.preco)}</span>
+                        </label>
+                    `;
+                    productAdicionaisContainer.innerHTML += itemHtml;
+                    editAdicionaisContainer.innerHTML += itemHtml.replace('id="', 'id="edit-'); // Garante IDs únicos para o modal
                 });
             });
         }
@@ -282,8 +283,12 @@
         document.getElementById('addProductForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const nomeProduto = document.getElementById('productName').value;
-
-            const selectedAdicionais = Array.from(document.getElementById('productAdicionais').selectedOptions).map(option => option.value);
+            
+            // ATUALIZADO: Lê os valores dos checkboxes marcados
+            const selectedAdicionais = [];
+            document.querySelectorAll('#productAdicionaisContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedAdicionais.push(checkbox.value);
+            });
 
             const formData = {
                 nome: nomeProduto,
@@ -292,21 +297,20 @@
                 imagen_url: document.getElementById('productImage').value,
                 categoria: document.getElementById('productCategory').value,
                 adicionais_disponiveis: selectedAdicionais,
+                disponivel: document.getElementById('productAvailable').checked,
                 createdAt: serverTimestamp()
             };
 
             try {
-                const productRef = doc(db, "produtos", nomeProduto);
-                await setDoc(productRef, formData);
+                await setDoc(doc(db, "produtos", nomeProduto), formData);
                 e.target.reset();
-            } catch (error) {
-                console.error("Error adding product: ", error);
+            } catch (error) { 
                 alert("Erro ao adicionar o produto. Verifique o console para mais detalhes.");
             }
         });
 
-
         document.getElementById('addAdicionalForm').addEventListener('submit', async (e) => {
+             // ... (função addAdicionalForm permanece a mesma) ...
             e.preventDefault();
             const nomeAdicional = document.getElementById('adicionalName').value;
             const formData = {
@@ -322,6 +326,7 @@
 
         // --- EDIT & DELETE (GLOBAL FUNCTIONS) ---
         window.deleteItem = async (type, id) => {
+            // ... (função deleteItem permanece a mesma) ...
             if (!confirm('Tem certeza que deseja deletar este item?')) return;
             const collectionName = type === 'product' ? 'produtos' : 'adicionais';
             try {
@@ -335,7 +340,6 @@
 
         window.hideModal = () => {
             editModal.classList.add('hidden');
-            editModal.classList.remove('flex');
         };
 
         window.openEditModal = (type, id) => {
@@ -343,12 +347,13 @@
             const item = isProduct ? window.allProducts.find(p => p.id === id) : window.allAdicionais.find(a => a.id === id);
 
             if (!item) return;
-
-            editForm.elements.editName.disabled = false;
+            
             editForm.elements.editId.value = id;
             editForm.elements.editType.value = type;
             editForm.elements.editName.value = item.nome;
             editForm.elements.editPrice.value = item.preco;
+            editForm.elements.editName.readOnly = true;
+            editForm.elements.editName.classList.add('bg-gray-200');
 
             editProductFields.style.display = isProduct ? 'block' : 'none';
 
@@ -356,14 +361,13 @@
                 editForm.elements.editDescription.value = item.descricao || '';
                 editForm.elements.editImage.value = item.imagen_url || '';
                 editForm.elements.editCategory.value = item.categoria || '';
-
+                editForm.elements.editAvailable.checked = item.disponivel === true; 
+                
+                // ATUALIZADO: Pré-seleciona os checkboxes corretos
                 const vinculados = item.adicionais_disponiveis || [];
-                Array.from(editAdicionaisSelect.options).forEach(option => {
-                    option.selected = vinculados.includes(option.value);
+                document.querySelectorAll('#editAdicionaisContainer input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = vinculados.includes(checkbox.value);
                 });
-
-            } else {
-                editForm.elements.editName.disabled = true;
             }
 
             editModal.classList.remove('hidden');
@@ -387,19 +391,22 @@
                 dataToUpdate.descricao = e.target.elements.editDescription.value;
                 dataToUpdate.imagen_url = e.target.elements.editImage.value;
                 dataToUpdate.categoria = e.target.elements.editCategory.value;
-                dataToUpdate.adicionais_disponiveis = Array.from(e.target.elements.editAdicionais.selectedOptions).map(opt => opt.value);
+                dataToUpdate.disponivel = e.target.elements.editAvailable.checked;
+
+                // ATUALIZADO: Lê os valores dos checkboxes marcados no modal de edição
+                const selectedAdicionais = [];
+                document.querySelectorAll('#editAdicionaisContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedAdicionais.push(checkbox.value);
+                });
+                dataToUpdate.adicionais_disponiveis = selectedAdicionais;
             }
 
             try {
-                // Não se pode alterar o nome de um produto/adicional se ele for o ID
-                if (id !== dataToUpdate.nome) {
-                    alert("Não é possível alterar o nome de um item, pois ele é usado como identificador único. Para renomear, delete o item e crie um novo.");
-                    return;
-                }
-
                 await updateDoc(docRef, dataToUpdate);
                 hideModal();
-            } catch (error) { console.error('Error updating item:', error); }
+            } catch (error) { 
+                alert('Ocorreu um erro ao salvar as alterações. Verifique o console.');
+            }
         });
     </script>
 </body>

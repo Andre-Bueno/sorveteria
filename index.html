@@ -1282,6 +1282,18 @@
         margin-bottom: 0.5rem;
       }
     }
+
+    .login-icon {
+    width: 60px;  /* Ajuste o tamanho se precisar */
+    height: 60px; /* Força a mesma altura para garantir o alinhamento */
+    vertical-align: middle; /* Ajuda no alinhamento com outros itens */
+}
+
+#login-icon-container {
+    display: flex;
+    align-items: center;
+    margin-left: 2px; /* Adiciona um espaço à esquerda de cada ícone */
+}
   </style>
 </head>
 
@@ -1304,6 +1316,11 @@
       </div>
       <div id="carrinho-icon-header" title="Ver carrinho">
         <span class="cart-emoji">🛒</span><span id="contador-carrinho-header">0</span>
+      </div>
+      <div id="login-icon-container">
+        <a href='/Sorveteria/login.html'>
+          <img src="https://cdn-icons-png.flaticon.com/256/5087/5087579.png" alt="Ícone de Login" class="login-icon">
+        </a>
       </div>
     </div>
   </header>
@@ -1531,103 +1548,103 @@
       // =======================================================================
       // FUNÇÃO DE CARREGAMENTO DE PRODUTOS - VERSÃO DEFINITIVA
       // =======================================================================
- async function carregarProdutosDoFirebase() {
-            const listaProdutosEl = document.getElementById('lista-produtos');
-            listaProdutosEl.innerHTML = '<p style="color:white; text-align:center; font-size: 1.2rem;">Buscando nossas delícias...</p>';
-            try {
-                const adicionaisPromise = getDocs(collection(db, 'adicionais'));
-                const produtosPromise = getDocs(collection(db, 'produtos'));
-                const [adicionaisSnapshot, produtosSnapshot] = await Promise.all([adicionaisPromise, produtosPromise]);
+      async function carregarProdutosDoFirebase() {
+        const listaProdutosEl = document.getElementById('lista-produtos');
+        listaProdutosEl.innerHTML = '<p style="color:white; text-align:center; font-size: 1.2rem;">Buscando nossas delícias...</p>';
+        try {
+          const adicionaisPromise = getDocs(collection(db, 'adicionais'));
+          const produtosPromise = getDocs(collection(db, 'produtos'));
+          const [adicionaisSnapshot, produtosSnapshot] = await Promise.all([adicionaisPromise, produtosPromise]);
 
-                const adicionaisMap = {};
-                adicionaisSnapshot.forEach(doc => {
-                    adicionaisMap[doc.id] = { id: doc.id, ...doc.data() };
-                });
+          const adicionaisMap = {};
+          adicionaisSnapshot.forEach(doc => {
+            adicionaisMap[doc.id] = { id: doc.id, ...doc.data() };
+          });
 
-                listaProdutosEl.innerHTML = '';
+          listaProdutosEl.innerHTML = '';
 
-                produtosSnapshot.forEach(doc => {
-                    const produtoData = doc.data();
-                    if (!produtoData.disponivel) return;
+          produtosSnapshot.forEach(doc => {
+            const produtoData = doc.data();
+            if (!produtoData.disponivel) return;
 
-                    // Limpeza dos dados para garantir
-                    const nomeLimpo = produtoData.nome ? String(produtoData.nome).trim() : '';
-                    const descricaoLimpa = produtoData.descricao ? String(produtoData.descricao).trim() : '';
-                    const categoriaLimpa = produtoData.categoria ? String(produtoData.categoria).replace(/\s+/g, ' ').trim() : '';
-                    
-                    // AQUI ESTÁ A MUDANÇA: Voltando a usar a URL do banco
-                    const imagemUrlLimpa = produtoData.imagen_url ? String(produtoData.imagen_url).trim() : '';
+            // Limpeza dos dados para garantir
+            const nomeLimpo = produtoData.nome ? String(produtoData.nome).trim() : '';
+            const descricaoLimpa = produtoData.descricao ? String(produtoData.descricao).trim() : '';
+            const categoriaLimpa = produtoData.categoria ? String(produtoData.categoria).replace(/\s+/g, ' ').trim() : '';
 
-                    const produtoDiv = document.createElement('div');
-                    produtoDiv.className = 'produto';
-                    
-                    // Configuração dos data-attributes
-                    produtoDiv.dataset.categoria = categoriaLimpa;
-                    produtoDiv.dataset.idProduto = doc.id.toLowerCase().replace(/[^a-z0-9-]/g, '-');
-                    produtoDiv.dataset.nome = nomeLimpo;
-                    produtoDiv.dataset.preco = produtoData.preco;
-                    produtoDiv.dataset.descricao = descricaoLimpa;
-                    const adicionaisDoProdutoArray = [];
-                    if (produtoData.adicionais_disponiveis && Array.isArray(produtoData.adicionais_disponiveis)) {
-                        produtoData.adicionais_disponiveis.forEach(adicionalId => {
-                            if (adicionaisMap[adicionalId]) {
-                                adicionaisDoProdutoArray.push(adicionaisMap[adicionalId]);
-                            }
-                        });
-                    }
-                    produtoDiv.dataset.adicionais = JSON.stringify(adicionaisDoProdutoArray).replace(/"/g, "'");
-                    produtoDiv.dataset.imagenUrl = imagemUrlLimpa;
+            // AQUI ESTÁ A MUDANÇA: Voltando a usar a URL do banco
+            const imagemUrlLimpa = produtoData.imagen_url ? String(produtoData.imagen_url).trim() : '';
 
-                    // Criação dos elementos
-                    const imgElement = document.createElement('img');
-                    imgElement.src = imagemUrlLimpa; // Usando a URL limpa do banco
-                    imgElement.alt = nomeLimpo;
-                    imgElement.onerror = function() {
-                        console.error(`Falha ao carregar imagem para o produto: ${nomeLimpo}. URL: ${this.src}`);
-                        this.style.display = 'none';
-                    };
-                    
-                    const h3Element = document.createElement('h3');
-                    h3Element.textContent = nomeLimpo;
+            const produtoDiv = document.createElement('div');
+            produtoDiv.className = 'produto';
 
-                    const descElement = document.createElement('p');
-                    descElement.className = 'descricao-produto';
-                    descElement.textContent = descricaoLimpa;
+            // Configuração dos data-attributes
+            produtoDiv.dataset.categoria = categoriaLimpa;
+            produtoDiv.dataset.idProduto = doc.id.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+            produtoDiv.dataset.nome = nomeLimpo;
+            produtoDiv.dataset.preco = produtoData.preco;
+            produtoDiv.dataset.descricao = descricaoLimpa;
+            const adicionaisDoProdutoArray = [];
+            if (produtoData.adicionais_disponiveis && Array.isArray(produtoData.adicionais_disponiveis)) {
+              produtoData.adicionais_disponiveis.forEach(adicionalId => {
+                if (adicionaisMap[adicionalId]) {
+                  adicionaisDoProdutoArray.push(adicionaisMap[adicionalId]);
+                }
+              });
+            }
+            produtoDiv.dataset.adicionais = JSON.stringify(adicionaisDoProdutoArray).replace(/"/g, "'");
+            produtoDiv.dataset.imagenUrl = imagemUrlLimpa;
 
-                    const precoElement = document.createElement('p');
-                    precoElement.className = 'preco';
-                    precoElement.textContent = `R$ ${(produtoData.preco || 0).toFixed(2).replace('.', ',')}`;
+            // Criação dos elementos
+            const imgElement = document.createElement('img');
+            imgElement.src = imagemUrlLimpa; // Usando a URL limpa do banco
+            imgElement.alt = nomeLimpo;
+            imgElement.onerror = function () {
+              console.error(`Falha ao carregar imagem para o produto: ${nomeLimpo}. URL: ${this.src}`);
+              this.style.display = 'none';
+            };
 
-                    const qtdContainer = document.createElement('div');
-                    qtdContainer.className = 'quantidade-produto-controle';
-                    qtdContainer.innerHTML = `
+            const h3Element = document.createElement('h3');
+            h3Element.textContent = nomeLimpo;
+
+            const descElement = document.createElement('p');
+            descElement.className = 'descricao-produto';
+            descElement.textContent = descricaoLimpa;
+
+            const precoElement = document.createElement('p');
+            precoElement.className = 'preco';
+            precoElement.textContent = `R$ ${(produtoData.preco || 0).toFixed(2).replace('.', ',')}`;
+
+            const qtdContainer = document.createElement('div');
+            qtdContainer.className = 'quantidade-produto-controle';
+            qtdContainer.innerHTML = `
                         <button class="btn-qtd-produto-menos" type="button">-</button>
                         <input type="number" class="input-qtd-produto" value="1" min="1" max="99" readonly>
                         <button class="btn-qtd-produto-mais" type="button">+</button>
                     `;
 
-                    const addButton = document.createElement('button');
-                    addButton.className = 'adicionar';
-                    addButton.textContent = 'Adicionar';
-                    
-                    produtoDiv.appendChild(imgElement);
-                    produtoDiv.appendChild(h3Element);
-                    produtoDiv.appendChild(descElement);
-                    produtoDiv.appendChild(precoElement);
-                    produtoDiv.appendChild(qtdContainer);
-                    produtoDiv.appendChild(addButton);
+            const addButton = document.createElement('button');
+            addButton.className = 'adicionar';
+            addButton.textContent = 'Adicionar';
 
-                    listaProdutosEl.appendChild(produtoDiv);
-                });
-                
-                configurarEventListenersDosProdutos();
-                aplicarFiltrosProdutos();
+            produtoDiv.appendChild(imgElement);
+            produtoDiv.appendChild(h3Element);
+            produtoDiv.appendChild(descElement);
+            produtoDiv.appendChild(precoElement);
+            produtoDiv.appendChild(qtdContainer);
+            produtoDiv.appendChild(addButton);
 
-            } catch (error) {
-                console.error("Erro ao buscar produtos do Firebase:", error);
-                listaProdutosEl.innerHTML = '<p style="color: #f8d7da; text-align:center;">Não foi possível carregar o cardápio. Tente recarregar a página.</p>';
-            }
+            listaProdutosEl.appendChild(produtoDiv);
+          });
+
+          configurarEventListenersDosProdutos();
+          aplicarFiltrosProdutos();
+
+        } catch (error) {
+          console.error("Erro ao buscar produtos do Firebase:", error);
+          listaProdutosEl.innerHTML = '<p style="color: #f8d7da; text-align:center;">Não foi possível carregar o cardápio. Tente recarregar a página.</p>';
         }
+      }
 
       function configurarEventListenersDosProdutos() {
         produtosEl = document.querySelectorAll('.produto'); // Atualiza a referência

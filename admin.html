@@ -5,13 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Sorveteria</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
@@ -35,12 +32,11 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <!-- Coluna de Produtos -->
             <section id="products-section">
                 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Adicionar Novo Produto</h2>
                     <form id="addProductForm" class="space-y-4">
-                        <input id="productName" type="text" placeholder="Nome do Produto (ex: Açaí Trufado)"
+                        <input id="productName" type="text" placeholder="Nome do Produto (será o ID do documento)"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
                         <textarea id="productDescription" placeholder="Descrição"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
@@ -48,6 +44,18 @@
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
                         <input id="productImage" type="url" placeholder="URL da Imagem"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+
+                        <input id="productCategory" type="text" placeholder="Categoria (ex: Açaís, Mais Vendidos)"
+                            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+
+                        <div>
+                            <label for="productAdicionais" class="block mb-2 font-semibold text-gray-700">Vincular
+                                Adicionais:</label>
+                            <select id="productAdicionais" multiple
+                                class="w-full p-3 border rounded-lg h-32 focus:ring-2 focus:ring-blue-500">
+                            </select>
+                        </div>
+
                         <button type="submit"
                             class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                             <i class="fas fa-plus-circle mr-2"></i>Adicionar Produto
@@ -58,13 +66,11 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Lista de Produtos</h2>
                     <div id="productList" class="space-y-4">
-                        <!-- Products will be dynamically inserted here -->
                         <p id="loading-products" class="text-gray-500">Verificando permissões...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Coluna de Itens Adicionais -->
             <section id="adicionais-section">
                 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Adicionar Item Adicional</h2>
@@ -83,7 +89,6 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Itens Adicionais</h2>
                     <div id="adicionalList" class="space-y-2">
-                        <!-- Adicionais will be dynamically inserted here -->
                         <p id="loading-adicionais" class="text-gray-500">Verificando permissões...</p>
                     </div>
                 </div>
@@ -91,9 +96,8 @@
         </div>
     </div>
 
-    <!-- Edit Product Modal -->
     <div id="editModal" class="fixed inset-0 z-50 items-center justify-center hidden">
-        <div class="modal-backdrop fixed inset-0" onclick="hideModal()"></div>
+        <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50" onclick="hideModal()"></div>
         <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg z-10 mx-4">
             <h2 class="text-2xl font-semibold mb-6">Editar Item</h2>
             <form id="editForm">
@@ -101,11 +105,23 @@
                 <input type="hidden" id="editType">
                 <div class="space-y-4">
                     <input id="editName" type="text" placeholder="Nome" class="w-full p-3 border rounded-lg" required>
-                    <textarea id="editDescription" placeholder="Descrição"
-                        class="w-full p-3 border rounded-lg"></textarea>
+
+                    <div id="edit-product-fields">
+                        <textarea id="editDescription" placeholder="Descrição"
+                            class="w-full p-3 border rounded-lg"></textarea>
+                        <input id="editImage" type="url" placeholder="URL da Imagem"
+                            class="w-full p-3 border rounded-lg mt-4">
+                        <input id="editCategory" type="text" placeholder="Categoria"
+                            class="w-full p-3 border rounded-lg mt-4">
+                        <div class="mt-4">
+                            <label for="editAdicionais" class="block mb-2 font-semibold text-gray-700">Adicionais
+                                Vinculados:</label>
+                            <select id="editAdicionais" multiple class="w-full p-3 border rounded-lg h-32"></select>
+                        </div>
+                    </div>
+
                     <input id="editPrice" type="number" step="0.01" placeholder="Preço"
                         class="w-full p-3 border rounded-lg" required>
-                    <input id="editImage" type="url" placeholder="URL da Imagem" class="w-full p-3 border rounded-lg">
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
                     <button type="button" onclick="hideModal()"
@@ -118,11 +134,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
@@ -138,36 +153,30 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- AUTHENTICATION (FIXED) ---
+        // --- AUTHENTICATION ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is signed in, now we must verify they are an admin
                 const userDocRef = doc(db, "users", user.uid);
                 try {
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists() && docSnap.data().role === 'admin') {
-                        // User is an admin, proceed to load the panel data
                         console.log("Admin user verified:", user.uid);
                         document.getElementById('loading-products').textContent = 'Carregando produtos...';
                         document.getElementById('loading-adicionais').textContent = 'Carregando itens adicionais...';
                         listenToData();
                     } else {
-                        // User is not an admin or their document doesn't exist
                         console.log("Access denied. User is not an admin. Redirecting...");
-                        // In a real app, you might show a message before redirecting
-                        window.location.href = 'login.html'; // Redirect to login page
+                        window.location.href = 'login.html';
                     }
                 } catch (error) {
                     console.error("Error verifying admin role:", error);
                     window.location.href = 'login.html';
                 }
             } else {
-                // No user is signed in. Redirect to login page immediately.
                 console.log("No user signed in. Redirecting to login.");
                 window.location.href = 'login.html';
             }
         });
-
 
         // --- DATABASE REFERENCES ---
         const productsCollectionRef = collection(db, "produtos");
@@ -178,6 +187,9 @@
         const adicionalList = document.getElementById('adicionalList');
         const loadingProducts = document.getElementById('loading-products');
         const loadingAdicionais = document.getElementById('loading-adicionais');
+        const productAdicionaisSelect = document.getElementById('productAdicionais');
+        const editAdicionaisSelect = document.getElementById('editAdicionais');
+
 
         // --- RENDER FUNCTIONS ---
         const formatPrice = (price) => `R$ ${Number(price).toFixed(2).replace('.', ',')}`;
@@ -191,17 +203,26 @@
             }
             products.forEach(p => {
                 const item = document.createElement('div');
-                item.className = 'bg-white rounded-lg shadow-md p-4 flex items-center gap-4';
+                item.className = 'bg-white rounded-lg shadow-md p-4 flex items-start gap-4';
+
+                const adicionaisText = p.adicionais_disponiveis && p.adicionais_disponiveis.length > 0
+                    ? p.adicionais_disponiveis.join(', ')
+                    : 'Nenhum';
+
                 item.innerHTML = `
                     <img src="${p.imagen_url || 'https://placehold.co/100x100/e2e8f0/cbd5e0?text=Sem+Foto'}" alt="${p.nome}" class="w-20 h-20 object-cover rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x100/e2e8f0/cbd5e0?text=Erro';">
                     <div class="flex-grow">
                         <h3 class="font-bold text-lg">${p.nome}</h3>
                         <p class="text-sm text-gray-600">${p.descricao || 'Sem descrição'}</p>
                         <p class="font-semibold text-green-600 mt-1">${formatPrice(p.preco)}</p>
+                        <div class="mt-2 text-xs">
+                            <p><strong class="text-gray-800">Categoria:</strong> <span class="text-blue-600 font-medium">${p.categoria || 'Nenhuma'}</span></p>
+                            <p><strong class="text-gray-800">Adicionais:</strong> <span class="text-purple-600">${adicionaisText}</span></p>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="openEditModal('product', '${p.id}')" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteItem('product', '${p.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    <div class="flex flex-col gap-2 items-center">
+                        <button onclick="openEditModal('product', '${p.id}')" class="text-blue-500 hover:text-blue-700 text-lg"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem('product', '${p.id}')" class="text-red-500 hover:text-red-700 text-lg"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
                 productList.appendChild(item);
@@ -236,59 +257,86 @@
         function listenToData() {
             onSnapshot(query(productsCollectionRef), (snapshot) => {
                 const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                window.allProducts = products; // Store for editing
+                window.allProducts = products;
                 renderProducts(products.sort((a, b) => a.nome.localeCompare(b.nome)));
                 if (loadingProducts) loadingProducts.style.display = 'none';
             });
+
             onSnapshot(query(adicionaisCollectionRef), (snapshot) => {
                 const adicionais = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                window.allAdicionais = adicionais; // Store for editing
+                window.allAdicionais = adicionais;
                 renderAdicionais(adicionais.sort((a, b) => a.nome.localeCompare(b.nome)));
                 if (loadingAdicionais) loadingAdicionais.style.display = 'none';
+
+                productAdicionaisSelect.innerHTML = '';
+                editAdicionaisSelect.innerHTML = '';
+                adicionais.forEach(ad => {
+                    const option = `<option value="${ad.nome}">${ad.nome} - ${formatPrice(ad.preco)}</option>`;
+                    productAdicionaisSelect.innerHTML += option;
+                    editAdicionaisSelect.innerHTML += option;
+                });
             });
         }
 
         // --- ADD FORMS LOGIC ---
         document.getElementById('addProductForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const nomeProduto = document.getElementById('productName').value;
+
+            const selectedAdicionais = Array.from(document.getElementById('productAdicionais').selectedOptions).map(option => option.value);
+
             const formData = {
-                nome: document.getElementById('productName').value,
+                nome: nomeProduto,
                 descricao: document.getElementById('productDescription').value,
                 preco: parseFloat(document.getElementById('productPrice').value),
                 imagen_url: document.getElementById('productImage').value,
+                categoria: document.getElementById('productCategory').value,
+                adicionais_disponiveis: selectedAdicionais,
                 createdAt: serverTimestamp()
             };
+
             try {
-                await addDoc(productsCollectionRef, formData);
+                const productRef = doc(db, "produtos", nomeProduto);
+                await setDoc(productRef, formData);
                 e.target.reset();
-            } catch (error) { console.error("Error adding product: ", error); }
+            } catch (error) {
+                console.error("Error adding product: ", error);
+                alert("Erro ao adicionar o produto. Verifique o console para mais detalhes.");
+            }
         });
+
 
         document.getElementById('addAdicionalForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const nomeAdicional = document.getElementById('adicionalName').value;
             const formData = {
-                nome: document.getElementById('adicionalName').value,
+                nome: nomeAdicional,
                 preco: parseFloat(document.getElementById('adicionalPrice').value)
             };
             try {
-                await addDoc(adicionaisCollectionRef, formData);
+                await setDoc(doc(db, "adicionais", nomeAdicional), formData);
                 e.target.reset();
             } catch (error) { console.error("Error adding adicional: ", error); }
         });
 
+
         // --- EDIT & DELETE (GLOBAL FUNCTIONS) ---
         window.deleteItem = async (type, id) => {
             if (!confirm('Tem certeza que deseja deletar este item?')) return;
-            const docRef = doc(db, type === 'product' ? 'produtos' : 'adicionais', id);
+            const collectionName = type === 'product' ? 'produtos' : 'adicionais';
             try {
-                await deleteDoc(docRef);
+                await deleteDoc(doc(db, collectionName, id));
             } catch (error) { console.error("Error deleting item:", error); }
         };
 
         const editModal = document.getElementById('editModal');
         const editForm = document.getElementById('editForm');
+        const editProductFields = document.getElementById('edit-product-fields');
 
-        window.hideModal = () => editModal.classList.add('hidden');
+        window.hideModal = () => {
+            editModal.classList.add('hidden');
+            editModal.classList.remove('flex');
+        };
 
         window.openEditModal = (type, id) => {
             const isProduct = type === 'product';
@@ -296,23 +344,30 @@
 
             if (!item) return;
 
-            // Populate form
+            editForm.elements.editName.disabled = false;
             editForm.elements.editId.value = id;
             editForm.elements.editType.value = type;
             editForm.elements.editName.value = item.nome;
             editForm.elements.editPrice.value = item.preco;
 
-            // Show/hide fields based on type
-            editForm.elements.editDescription.style.display = isProduct ? 'block' : 'none';
-            editForm.elements.editImage.style.display = isProduct ? 'block' : 'none';
+            editProductFields.style.display = isProduct ? 'block' : 'none';
 
             if (isProduct) {
                 editForm.elements.editDescription.value = item.descricao || '';
                 editForm.elements.editImage.value = item.imagen_url || '';
+                editForm.elements.editCategory.value = item.categoria || '';
+
+                const vinculados = item.adicionais_disponiveis || [];
+                Array.from(editAdicionaisSelect.options).forEach(option => {
+                    option.selected = vinculados.includes(option.value);
+                });
+
+            } else {
+                editForm.elements.editName.disabled = true;
             }
 
             editModal.classList.remove('hidden');
-            editModal.classList.add('flex', 'items-center', 'justify-center');
+            editModal.classList.add('flex');
         };
 
         editForm.addEventListener('submit', async (e) => {
@@ -320,7 +375,6 @@
             const id = e.target.elements.editId.value;
             const type = e.target.elements.editType.value;
             const isProduct = type === 'product';
-
             const collectionName = isProduct ? 'produtos' : 'adicionais';
             const docRef = doc(db, collectionName, id);
 
@@ -332,14 +386,21 @@
             if (isProduct) {
                 dataToUpdate.descricao = e.target.elements.editDescription.value;
                 dataToUpdate.imagen_url = e.target.elements.editImage.value;
+                dataToUpdate.categoria = e.target.elements.editCategory.value;
+                dataToUpdate.adicionais_disponiveis = Array.from(e.target.elements.editAdicionais.selectedOptions).map(opt => opt.value);
             }
 
             try {
+                // Não se pode alterar o nome de um produto/adicional se ele for o ID
+                if (id !== dataToUpdate.nome) {
+                    alert("Não é possível alterar o nome de um item, pois ele é usado como identificador único. Para renomear, delete o item e crie um novo.");
+                    return;
+                }
+
                 await updateDoc(docRef, dataToUpdate);
                 hideModal();
             } catch (error) { console.error('Error updating item:', error); }
         });
-
     </script>
 </body>
 

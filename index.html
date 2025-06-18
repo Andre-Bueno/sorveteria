@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilhas da Amazônia Triunfo 🍃</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-primaria: #4F2683;
+      --cor-secundaria: #6a4a99;
+      --cor-texto: #333;
+      --cor-branca: #fff;
+      --cor-destaque: #00892C;
+      --cor-sucesso: #00892C;
+      --cor-aviso: #FF9800;
+      --cor-erro: #F44336;
+      --sombra-suave: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: var(--cor-texto);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: linear-gradient(rgba(79, 38, 131, 0.85), rgba(79, 38, 131, 0.85)), url('https://trilhasdaamazonia.com.br/uploads/banners/banner-01-copiar.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+      width: 95%;
+    }
+
+    header {
+      background-color: var(--cor-primaria);
+      padding: 0.8rem 0;
+      box-shadow: var(--sombra-suave);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      color: var(--cor-branca);
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo-img {
+      max-height: 50px;
+      margin-right: 15px;
+      border-radius: 50%;
+      border: 2px solid var(--cor-branca);
+    }
+
+    header h1 .titulo-slogan-wrapper {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    header h1 .slogan {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: #e0e0e0;
+      margin-top: 2px;
+    }
+
+    #info-funcionamento-header {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--cor-branca);
+      line-height: 1.3;
+    }
+
+    #info-funcionamento-header p {
+      margin: 0;
+      padding: 0;
+    }
+
+    #status-aberto-fechado.aberto {
+      color: #a5d6a7;
+      font-weight: 600;
+    }
+
+    #status-aberto-fechado.fechado {
+      color: #ffcdd2;
+      font-weight: 600;
+    }
+
+    #carrinho-icon-header {
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: relative;
+      background-color: var(--cor-branca);
+      padding: 8px 12px;
+      border-radius: 50px;
+      box-shadow: var(--sombra-suave);
+      color: var(--cor-primaria);
+      display: flex;
+      align-items: center;
+    }
+
+    #carrinho-icon-header .cart-emoji {
+      margin-right: 5px;
+    }
+
+    #contador-carrinho-header {
+      background-color: var(--cor-destaque);
+      color: var(--cor-branca);
+      border-radius: 50%;
+      padding: 0.2em 0.5em;
+      font-size: 0.8rem;
+      font-weight: 600;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    #cep-section {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 1.5rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #cep-section h2 {
+      margin-bottom: 1rem;
+      color: var(--cor-branca);
+    }
+
+    #cliente-nome-group input[type="text"] {
+      width: calc(100% - 22px);
+      max-width: 400px;
+      padding: 0.7rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      margin: 0 auto 1rem auto;
+      display: block;
+    }
+
+    #cep-input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    #cep-input-group input[type="text"] {
+      padding: 0.7rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 200px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #cep-input-group button {
+      padding: 0.7rem 1rem;
+      background-color: var(--cor-destaque);
+      color: var(--cor-branca);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    #cep-input-group button:hover {
+      background-color: #006d22;
+    }
+
+    #cep-resultado {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      min-height: 20px;
+      color: var(--cor-branca);
+    }
+
+    #cep-resultado.sucesso {
+      color: #d4edda;
+    }
+
+    #cep-resultado.aviso {
+      color: #fff3cd;
+    }
+
+    #cep-resultado.erro {
+      color: #f8d7da;
+    }
+
+    #endereco-completo-form {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #endereco-completo-form h3 {
+      color: var(--cor-primaria);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    #endereco-completo-form input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #endereco-completo-form input[readonly] {
+      background-color: #f0f0f0;
+      cursor: not-allowed;
+    }
+
+    #endereco-completo-form button {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      margin: 1rem 0 0.5rem;
+      background-color: var(--cor-sucesso);
+      color: var(--cor-branca);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    #endereco-completo-form button:hover {
+      background-color: #006d22;
+    }
+
+    #endereco-confirmado-msg {
+      margin-top: 0.5rem;
+      font-weight: 600;
+      min-height: 1.2em;
+    }
+
+    #endereco-confirmado-msg.sucesso {
+      color: var(--cor-sucesso);
+    }
+
+    #endereco-confirmado-msg.aviso {
+      color: var(--cor-aviso);
+    }
+
+    #endereco-confirmado-msg.erro {
+      color: var(--cor-erro);
+    }
+
+    #endereco-raio-feedback,
+    #tempo-entrega-feedback,
+    #taxa-entrega-feedback {
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 0.9em;
+      min-height: 1.2em;
+      color: var(--cor-texto);
+    }
+
+    #endereco-raio-feedback.sucesso,
+    #taxa-entrega-feedback.sucesso,
+    #tempo-entrega-feedback.sucesso {
+      color: var(--cor-sucesso);
+    }
+
+    #endereco-raio-feedback.aviso,
+    #tempo-entrega-feedback.aviso,
+    #taxa-entrega-feedback.aviso {
+      color: var(--cor-aviso);
+    }
+
+    #endereco-raio-feedback.erro,
+    #taxa-entrega-feedback.erro,
+    #tempo-entrega-feedback.erro {
+      color: var(--cor-erro);
+    }
+
+    .busca-container {
+      margin: 1.5rem 0 2rem 0;
+      text-align: center;
+    }
+
+    #input-busca-produto {
+      padding: 0.8rem 1rem;
+      width: 80%;
+      max-width: 450px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      box-shadow: var(--sombra-suave);
+    }
+
+    #input-busca-produto:focus {
+      border-color: var(--cor-primaria);
+      outline-color: var(--cor-primaria);
+    }
+
+    .categorias {
+      text-align: center;
+      margin: 2.5rem 0;
+    }
+
+    .categorias h2 {
+      margin-bottom: 1.5rem;
+      color: var(--cor-branca);
+    }
+
+    .categorias button {
+      padding: 0.8rem 1.5rem;
+      margin: 0.5rem;
+      border: 1px solid var(--cor-branca);
+      background-color: transparent;
+      color: var(--cor-branca);
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .categorias button:hover,
+    .categorias button.active {
+      background-color: var(--cor-branca);
+      color: var(--cor-primaria);
+    }
+
+    #lista-produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .produto {
+      background-color: var(--cor-branca);
+      border-radius: 10px;
+      box-shadow: var(--sombra-suave);
+      padding: 1rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease-in-out, opacity 0.3s ease;
+    }
+
+    .produto:hover {
+      transform: translateY(-5px);
+    }
+
+    .produto img {
+      max-width: 100%;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+      background-color: #f0f0f0;
+    }
+
+    .produto h3 {
+      margin-bottom: 0.2rem;
+      font-size: 1.25rem;
+      color: var(--cor-texto);
+      min-height: 2.5em;
+    }
+
+    .produto .descricao-produto {
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 0.1rem;
+      margin-bottom: 0.6rem;
+      line-height: 1.4;
+      text-align: left;
+      word-wrap: break-word;
+    }
+
+    .produto .preco {
+      font-size: 1.1rem;
+      color: var(--cor-primaria);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .produto .preco-antigo {
+      font-size: 0.9rem;
+      text-decoration: line-through;
+      color: #999;
+      margin-right: 0.5rem;
+    }
+
+    .quantidade-produto-controle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .quantidade-produto-controle button {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      color: var(--cor-texto);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 28px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .quantidade-produto-controle button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .quantidade-produto-controle .input-qtd-produto {
+      width: 40px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 0.3rem;
+      margin: 0 0.5rem;
+      font-family: 'Poppins';
+      font-weight: 600;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .quantidade-produto-controle .input-qtd-produto::-webkit-outer-spin-button,
+    .quantidade-produto-controle .input-qtd-produto::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .produto .adicionar {
+      padding: 0.8rem 1rem;
+      background-color: var(--cor-destaque);
+      color: var(--cor-branca);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      margin-top: auto;
+      font-size: 1rem;
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+
+    .produto .adicionar:hover {
+      background-color: #006d22;
+      transform: scale(1.02);
+    }
+
+    .produto .adicionar:active {
+      transform: scale(0.98);
+    }
+
+    #popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--cor-sucesso);
+      color: var(--cor-branca);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 2001;
+      text-align: center;
+      transition: opacity 0.5s ease-out, top 0.5s ease-out;
+    }
+
+    #popup.escondido {
+      opacity: 0;
+      top: -100px;
+      pointer-events: none;
+    }
+
+    #popup p {
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .produto.escondido {
+      display: none !important;
+      opacity: 0;
+    }
+
+    .escondido {
+      display: none !important;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.ativo {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background-color: var(--cor-branca);
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal:not(.escondido) {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #eee;
+      background-color: var(--cor-primaria);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--cor-branca);
+      font-size: 1.4rem;
+    }
+
+    .fechar-modal {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--cor-branca);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    #itens-carrinho-lista-modal {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 0.5rem 1.5rem;
+    }
+
+    .item-carrinho {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.9rem;
+    }
+
+    .item-carrinho:last-child {
+      border-bottom: none;
+    }
+
+    .item-carrinho-principal {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .item-carrinho-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 10px;
+      background-color: #f0f0f0;
+      flex-shrink: 0;
+    }
+
+    .item-carrinho-detalhes {
+      flex-grow: 1;
+      flex-shrink: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      margin-right: 5px;
+    }
+
+    .item-carrinho-nome {
+      font-weight: 500;
+      line-height: 1.3;
+      max-height: 2.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .item-carrinho-descricao {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 3px;
+      white-space: normal;
+      line-height: 1.3;
+      max-height: 2.6em;
+      text-align: left;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .btn-toggle-adicionais {
+      background-color: #f4f1f8;
+      border: 1px solid var(--cor-secundaria);
+      color: var(--cor-primaria);
+      padding: 3px 8px;
+      font-size: 0.75em;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: auto;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .adicionais-container {
+      margin-top: 8px;
+      width: 100%;
+      padding-left: 5px;
+      border-top: 1px dashed #eee;
+      padding-top: 8px;
+    }
+
+    .adicionais-container h5 {
+      font-size: 0.8em;
+      margin-bottom: 4px;
+      color: var(--cor-texto);
+      text-align: left;
+    }
+
+    .adicionais-container label {
+      font-size: 0.75em;
+      margin-right: 10px;
+      display: block;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    .adicionais-container input[type="checkbox"] {
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .item-carrinho-adicionais-selecionados {
+      font-size: 0.75em;
+      color: #444;
+      margin-top: 4px;
+      padding-left: 5px;
+      width: 100%;
+    }
+
+    .item-carrinho-adicionais-selecionados span {
+      display: block;
+      line-height: 1.4;
+    }
+
+    .item-carrinho-acoes-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .item-carrinho-qtd-controle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-basis: auto;
+      margin: 0 5px 0 0;
+      flex-shrink: 0;
+    }
+
+    .item-carrinho-qtd-controle button.btn-qtd {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      color: var(--cor-texto);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 24px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .item-carrinho-qtd-controle button.btn-qtd:hover {
+      background-color: #e0e0e0;
+    }
+
+    .item-carrinho-qtd-controle .qtd-valor {
+      padding: 0 8px;
+      min-width: 18px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .item-carrinho-preco {
+      font-weight: 600;
+      min-width: 60px;
+      text-align: right;
+      flex-basis: auto;
+      flex-shrink: 0;
+      margin-left: 5px;
+    }
+
+    .item-carrinho-remover {
+      background-color: #ffebee;
+      color: var(--cor-erro);
+      border: 1px solid #ffcdd2;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-left: 8px;
+      transition: background-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .item-carrinho-remover:hover {
+      background-color: #ffcdd2;
+    }
+
+    #modal-adicionais .modal-footer {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .botoes-adicionais-wrapper {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .botoes-adicionais-wrapper button {
+      padding: 0.7rem;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+      flex-basis: calc(50% - 0.4rem);
+    }
+
+    #modal-adicionais-conteudo {
+      padding: 1rem;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    #modal-adicionais-conteudo label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    #modal-adicionais-conteudo input[type="checkbox"] {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    #modal-adicionais-preco-total-item {
+      font-weight: bold;
+      display: block;
+      text-align: right;
+      margin-bottom: 0.5rem;
+    }
+
+    .cupom-container {
+      padding: 0.8rem 1.5rem 0.3rem;
+    }
+
+    #cupom-feedback {
+      padding: 0 1.5rem 0.3rem;
+      min-height: 1em;
+      font-size: 0.8rem;
+    }
+
+    .desconto-info {
+      padding: 0 1.5rem 0.3rem;
+      font-size: 0.85rem;
+    }
+
+    .forma-pagamento-container {
+      padding: 0.5rem 1.5rem 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    #taxa-entrega-valor {
+      font-size: 0.9em;
+      text-align: right;
+      padding: 0 1.5rem 0.3rem;
+      font-weight: 600;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+    }
+
+    #aviso-horario-modal {
+      color: var(--cor-erro);
+      text-align: center;
+      font-size: 0.9em;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    #carrinho-total-modal {
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    #carrinho-total-modal span {
+      color: var(--cor-primaria);
+    }
+
+    .carrinho-acoes-modal {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .carrinho-acoes-modal button {
+      padding: 0.7rem;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+      flex-basis: 100%;
+    }
+
+    .carrinho-acoes-modal .continuar-comprando,
+    .carrinho-acoes-modal .limpar-carrinho-btn {
+      background-color: #e0e0e0;
+      color: var(--cor-texto);
+    }
+
+    .carrinho-acoes-modal .continuar-comprando:hover,
+    .carrinho-acoes-modal .limpar-carrinho-btn:hover {
+      background-color: #d0d0d0;
+    }
+
+    .carrinho-acoes-modal .finalizar-pedido {
+      background-color: var(--cor-sucesso);
+      color: var(--cor-branca);
+    }
+
+    .carrinho-acoes-modal .finalizar-pedido:hover {
+      background-color: #006d22;
+    }
+
+    .carrinho-acoes-modal .finalizar-pedido:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+
+    #colher-escolha-botoes {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    #colher-escolha-botoes button {
+      flex-grow: 1;
+    }
+
+    @media(min-width:480px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      .carrinho-acoes-modal .continuar-comprando,
+      .carrinho-acoes-modal .limpar-carrinho-btn {
+        flex-basis: calc(50% - 0.5rem);
+      }
+
+      .carrinho-acoes-modal .finalizar-pedido {
+        flex-basis: 100%;
+        margin-top: 0.5rem;
+      }
+    }
+
+    #ultimos-pedidos-section {
+      padding: 2rem 0;
+      background-color: rgba(255, 255, 255, 0.9);
+      margin-top: 2rem;
+      border-radius: 8px;
+    }
+
+    #ultimos-pedidos-section h2 {
+      text-align: center;
+      color: var(--cor-primaria);
+      margin-bottom: 1.5rem;
+    }
+
+    .lista-ultimos-pedidos {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pedido-anterior {
+      background-color: white;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .pedido-anterior-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .pedido-anterior-header span {
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    .pedido-anterior-header strong {
+      font-size: 1.1rem;
+      color: var(--cor-texto);
+    }
+
+    .pedido-anterior-itens {
+      font-size: 0.9rem;
+      margin-left: 1rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+      list-style: disc;
+      padding-left: 1rem;
+    }
+
+    .pedido-anterior .btn-repetir-pedido {
+      display: block;
+      width: auto;
+      padding: 0.5rem 1rem;
+      background-color: var(--cor-destaque);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    .pedido-anterior .btn-repetir-pedido:hover {
+      background-color: #006d22;
+    }
+
+    #sem-pedidos-anteriores {
+      text-align: center;
+      color: #777;
+    }
+
+    footer {
+      background-color: var(--cor-primaria);
+      color: var(--cor-branca);
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: auto;
+    }
+
+    @media(max-width:768px) {
+      #lista-produtos {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .produto {
+        padding: 0.8rem;
+      }
+
+      .produto img {
+        height: 150px;
+      }
+
+      .produto h3 {
+        font-size: 1.1rem;
+      }
+
+      .produto .descricao-produto {
+        font-size: 0.75rem;
+      }
+
+      .produto .preco {
+        font-size: 1rem;
+      }
+
+      .produto .adicionar {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.85rem;
+      }
+
+      #modal-carrinho {
+        max-width: 95%;
+      }
+    }
+
+    @media(max-width:520px) {
+      header .container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      header h1 {
+        font-size: 1.2rem;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+
+      header h1 .titulo-slogan-wrapper span {
+        font-size: 1.2rem;
+      }
+
+      header h1 .slogan {
+        font-size: 0.7rem;
+      }
+
+      #info-funcionamento-header {
+        width: auto;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      #carrinho-icon-header {
+        margin: 0 auto;
+      }
+
+      #cliente-nome-group input[type="text"] {
+        width: 100%;
+      }
+
+      #cep-input-group input[type="text"] {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      #cep-input-group button {
+        width: 100%;
+      }
+
+      #input-busca-produto {
+        width: 95%;
+      }
+
+      #endereco-completo-form {
+        padding: 1rem;
+      }
+
+      #endereco-completo-form input[type="text"],
+      #endereco-completo-form button {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      #lista-produtos {
+        grid-template-columns: 1fr;
+      }
+
+      #itens-carrinho-lista-modal .item-carrinho {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        row-gap: 8px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+
+      .item-carrinho-principal {
+        margin-bottom: 0;
+      }
+
+      .item-carrinho-img {
+        width: 45px;
+        height: 45px;
+        margin-right: 10px;
+        flex-shrink: 0;
+      }
+
+      .item-carrinho-detalhes {
+        flex-grow: 1;
+        flex-basis: calc(100% - 100px);
+        min-width: 100px;
+      }
+
+      .btn-toggle-adicionais {
+        padding: 2px 6px;
+        font-size: 0.7em;
+        margin-left: 5px;
+        height: fit-content;
+        flex-shrink: 0;
+        align-self: center;
+      }
+
+      .item-carrinho-nome {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        max-height: calc(1.3em * 2);
+        line-height: 1.3;
+        width: 100%;
+      }
+
+      .item-carrinho-descricao {
+        font-size: 0.7rem;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        max-height: calc(1.3em * 1);
+        line-height: 1.3;
+        margin-top: 2px;
+        width: 100%;
+      }
+
+      .adicionais-container {
+        flex-basis: 100%;
+        margin-top: 5px;
+        padding-left: 0px;
+      }
+
+      .item-carrinho-acoes-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        flex-basis: 100%;
+        margin-top: 8px;
+      }
+
+      .item-carrinho-qtd-controle {
+        margin: 0;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+      }
+
+      .item-carrinho-qtd-controle button.btn-qtd {
+        width: 24px;
+        height: 24px;
+        font-size: 0.85rem;
+      }
+
+      .item-carrinho-qtd-controle .qtd-valor {
+        padding: 0 5px;
+        font-size: 0.85rem;
+      }
+
+      .item-carrinho-preco {
+        font-size: 0.85rem;
+        text-align: right;
+        white-space: nowrap;
+        margin-left: auto;
+      }
+
+      .item-carrinho-remover {
+        width: 24px;
+        height: 24px;
+        line-height: 22px;
+        font-size: 1rem;
+        margin-left: 8px;
+      }
+
+      .carrinho-acoes-modal button {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+      }
+
+      .cupom-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cupom-container input[type="text"] {
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>
+        <img src="https://trilhasdaamazonia.com.br/uploads/thumbs/159x159/identidade/logo.png"
+          alt="Logo Trilhas da Amazônia" class="logo-img">
+        <div class="titulo-slogan-wrapper">
+          <span>Trilhas da Amazônia Triunfo</span>
+          <small class="slogan">Onde seu paladar se surpreende</small>
+        </div>
+      </h1>
+      <div id="info-funcionamento-header">
+        <p>Qua-Sex: 12:00 às 23:00</p>
+        <p>Sáb: 11:00 às 23:00 | Dom: 11:00 às 19:30</p>
+        <p>Seg: 12:00 às 23:00 | Terça: Fechado</p>
+        <p id="status-aberto-fechado">Verificando...</p>
+      </div>
+      <div id="carrinho-icon-header" title="Ver carrinho">
+        <span class="cart-emoji">🛒</span><span id="contador-carrinho-header">0</span>
+      </div>
+    </div>
+  </header>
+  <section id="cep-section">
+    <div class="container">
+      <h2>📍 Endereço para Entrega</h2>
+      <div id="cliente-nome-group"><input type="text" id="cliente-nome" placeholder="Seu nome completo *" /></div>
+      <div id="cep-input-group"><input type="text" id="cep" placeholder="Seu CEP (só números)" maxlength="8" /><button
+          id="btn-verificar-cep" onclick="validarEPreencherEndereco()">Verificar CEP</button></div>
+      <div id="cep-resultado"></div>
+      <div id="endereco-completo-form" class="escondido">
+        <h3>Complete seu endereço:</h3><input type="text" id="endereco-rua" placeholder="Rua / Avenida" /><input
+          type="text" id="endereco-numero" placeholder="Número *" required /><input type="text"
+          id="endereco-complemento" placeholder="Complemento (Apto, Bloco, Ponto de Ref.)" /><input type="text"
+          id="endereco-bairro" placeholder="Bairro" /><input type="text" id="endereco-cidade"
+          placeholder="Cidade" /><input type="text" id="endereco-uf" placeholder="UF" /><button
+          id="btn-confirmar-endereco" onclick="confirmarEnderecoCompleto()">Confirmar Endereço</button>
+        <div id="endereco-confirmado-msg"></div>
+        <div id="endereco-raio-feedback"></div>
+        <div id="taxa-entrega-feedback"></div>
+        <div id="tempo-entrega-feedback"></div>
+      </div>
+    </div>
+  </section>
+  <main class="container">
+    <section class="busca-container">
+      <input type="text" id="input-busca-produto" placeholder="🔎 O que você procura hoje?">
+    </section>
+    <section class="categorias">
+      <h2>Nossas Delícias 🍃</h2>
+      <button data-categoria="todos" class="active">Todos</button>
+      <button data-categoria="combo">Combos</button>
+      <button data-categoria="itens-mais-vendidos">Mais Vendidos</button>
+      <button data-categoria="acai">Açai</button>
+      <button data-categoria="milk-shake">Milk Shakes</button>
+      <button data-categoria="zero-acucar">Zero Açucar</button>
+      <button data-categoria="potes-1lt">Potes de 1L</button>
+      <button data-categoria="picoles-gourmet">Picolés Gourmet</button>
+      <button data-categoria="picoles-tradicionais">Picolés Tradicionais</button>
+      <button data-categoria="bebidas">Bebidas</button>
+      <button data-categoria="outros">Outros</button>
+    </section>
+    <section id="lista-produtos">
+      <p style="color: white; text-align: center;">Buscando nosso cardápio de delícias...</p>
+    </section>
+  </main>
+  <section id="ultimos-pedidos-section" class="container">
+    <h2>Seus Últimos Pedidos</h2>
+    <div id="lista-ultimos-pedidos-container">
+      <p id="sem-pedidos-anteriores">Você ainda não tem pedidos recentes.</p>
+    </div>
+  </section>
+  <div id="popup" class="escondido">
+    <p id="popup-mensagem">Item adicionado ao carrinho!</p>
+  </div>
+  <div id="modal-adicionais-overlay" class="modal-overlay escondido"></div>
+  <div id="modal-adicionais" class="modal escondido">
+    <div class="modal-header">
+      <h2 id="modal-adicionais-titulo">Personalize seu Item</h2>
+      <button class="fechar-modal" id="fechar-modal-adicionais">×</button>
+    </div>
+    <div id="modal-adicionais-conteudo"></div>
+    <div class="modal-footer">
+      <span id="modal-adicionais-preco-total-item">Preço Total do Item: R$ 0,00</span>
+      <div class="botoes-adicionais-wrapper">
+        <button id="btn-fechar-adicionais-footer" class="continuar-comprando">Fechar</button>
+        <button id="btn-confirmar-adicionais-e-add-carrinho" class="finalizar-pedido">Adicionar ao Carrinho</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-carrinho-overlay" class="modal-overlay escondido"></div>
+  <div id="modal-carrinho" class="modal escondido">
+    <div class="modal-header">
+      <h2>🛒 Seu Carrinho</h2><button class="fechar-modal" id="fechar-modal-carrinho-btn">×</button>
+    </div>
+    <div id="itens-carrinho-lista-modal">
+      <p style="text-align:center;padding:20px 0;">Seu carrinho está vazio.</p>
+    </div>
+    <div class="cupom-container"><input type="text" id="input-cupom" placeholder="Código do cupom"><button
+        id="btn-aplicar-cupom">Aplicar</button></div>
+    <p id="cupom-feedback"></p>
+    <p class="desconto-info" id="desconto-aplicado-info"></p>
+    <div class="forma-pagamento-container">
+      <h4>Forma de Pagamento: *</h4><select id="forma-pagamento-select">
+        <option value="">Selecione...</option>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="CartaoCredito">Cartão de Crédito</option>
+        <option value="CartaoDebito">Cartão de Débito</option>
+        <option value="PIX">PIX</option>
+      </select><input type="text" id="troco-para" class="escondido" placeholder="Troco para R$ (ex: 50,00)">
+    </div>
+    <div class="modal-footer">
+      <p id="aviso-horario-modal"></p>
+      <div id="taxa-entrega-valor"></div>
+      <div id="carrinho-total-modal"><strong>Total: R$ <span id="total-preco-carrinho-modal">0,00</span></strong></div>
+      <div class="carrinho-acoes-modal"><button class="continuar-comprando">Continuar Comprando</button><button
+          class="limpar-carrinho-btn">Limpar Carrinho</button><button id="finalizar-pedido-whatsapp-modal"
+          class="finalizar-pedido">Finalizar Pedido via WhatsApp</button></div>
+    </div>
+  </div>
+
+  <div id="modal-colher-overlay" class="modal-overlay escondido"></div>
+  <div id="modal-colher" class="modal escondido">
+    <div class="modal-header">
+      <h2>Precisa de Talheres?</h2>
+    </div>
+    <div id="modal-colher-conteudo" style="padding: 1.5rem; text-align: center;">
+      <p id="colher-pergunta" style="margin-bottom: 1.5rem; font-size: 1.1rem;">Vai precisar de colher?</p>
+      <div id="colher-escolha-botoes">
+        <button id="btn-colher-sim" class="finalizar-pedido">Sim</button>
+        <button id="btn-colher-nao" class="continuar-comprando">Não, Obrigado</button>
+      </div>
+      <div id="colher-quantidade-div" class="escondido" style="margin-top: 1.5rem;">
+        <label for="input-qtd-colher" style="display: block; margin-bottom: 0.5rem;">Quantas colheres? (R$ 0,30
+          cada)</label>
+        <input type="number" id="input-qtd-colher" value="1" min="1" max="20" class="input-qtd-produto"
+          style="margin: 0 auto; display: block; width: 80px; padding: 0.5rem;">
+        <button id="btn-confirmar-colher" class="finalizar-pedido" style="width: 100%; margin-top: 1rem;">Confirmar e
+          Finalizar Pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Trilhas da Amazônia Triunfo. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    // --- INÍCIO: CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
+      authDomain: "bdsorveteria-2690d.firebaseapp.com",
+      projectId: "bdsorveteria-2690d",
+      storageBucket: "bdsorveteria-2690d.appspot.com",
+      messagingSenderId: "1004178621874",
+      appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
+      measurementId: "G-SMW22TX942"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    // --- FIM: CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE ---
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const contadorCarrinhoHeaderEl = document.getElementById('contador-carrinho-header');
+      const carrinhoIconHeaderEl = document.getElementById('carrinho-icon-header');
+      const modalCarrinhoEl = document.getElementById('modal-carrinho');
+      const modalCarrinhoOverlayEl = document.getElementById('modal-carrinho-overlay');
+      const itensCarrinhoListaModalEl = document.getElementById('itens-carrinho-lista-modal');
+      const totalPrecoCarrinhoModalEl = document.getElementById('total-preco-carrinho-modal');
+      const btnFinalizarPedidoWhatsAppModal = document.getElementById('finalizar-pedido-whatsapp-modal');
+      const popupEl = document.getElementById('popup');
+      const popupMensagemEl = document.getElementById('popup-mensagem');
+      const botoesCategoria = document.querySelectorAll('.categorias button');
+      let produtosEl = [];
+      const clienteNomeEl = document.getElementById('cliente-nome');
+      const cepInputEl = document.getElementById('cep');
+      const cepResultadoEl = document.getElementById('cep-resultado');
+      const enderecoCompletoFormEl = document.getElementById('endereco-completo-form');
+      const enderecoRuaEl = document.getElementById('endereco-rua');
+      const enderecoNumeroEl = document.getElementById('endereco-numero');
+      const enderecoComplementoEl = document.getElementById('endereco-complemento');
+      const enderecoBairroEl = document.getElementById('endereco-bairro');
+      const enderecoCidadeEl = document.getElementById('endereco-cidade');
+      const enderecoUfEl = document.getElementById('endereco-uf');
+      const enderecoConfirmadoMsgEl = document.getElementById('endereco-confirmado-msg');
+      const enderecoRaioFeedbackEl = document.getElementById('endereco-raio-feedback');
+      const taxaEntregaFeedbackEl = document.getElementById('taxa-entrega-feedback');
+      const tempoEntregaFeedbackEl = document.getElementById('tempo-entrega-feedback');
+      const taxaEntregaValorModalEl = document.getElementById('taxa-entrega-valor');
+      const inputBuscaProdutoEl = document.getElementById('input-busca-produto');
+      const inputCupomEl = document.getElementById('input-cupom');
+      const cupomFeedbackEl = document.getElementById('cupom-feedback');
+      const descontoAplicadoInfoEl = document.getElementById('desconto-aplicado-info');
+      const listaUltimosPedidosContainerEl = document.getElementById('lista-ultimos-pedidos-container');
+      const semPedidosAnterioresEl = document.getElementById('sem-pedidos-anteriores');
+      const formaPagamentoSelectEl = document.getElementById('forma-pagamento-select');
+      const trocoParaEl = document.getElementById('troco-para');
+      const statusAbertoFechadoEl = document.getElementById('status-aberto-fechado');
+      const avisoHorarioModalEl = document.getElementById('aviso-horario-modal');
+      const modalAdicionaisOverlayEl = document.getElementById('modal-adicionais-overlay');
+      const modalAdicionaisEl = document.getElementById('modal-adicionais');
+      const modalAdicionaisTituloEl = document.getElementById('modal-adicionais-titulo');
+      const modalAdicionaisConteudoEl = document.getElementById('modal-adicionais-conteudo');
+      const modalAdicionaisPrecoTotalItemEl = document.getElementById('modal-adicionais-preco-total-item');
+      const btnConfirmarAdicionaisECarrinho = document.getElementById('btn-confirmar-adicionais-e-add-carrinho');
+      const btnFecharModalAdicionais = document.getElementById('fechar-modal-adicionais');
+      const btnFecharModalAdicionaisFooter = document.getElementById('btn-fechar-adicionais-footer');
+      const modalColherOverlayEl = document.getElementById('modal-colher-overlay');
+      const modalColherEl = document.getElementById('modal-colher');
+      const colherPerguntaEl = document.getElementById('colher-pergunta');
+      const btnColherSim = document.getElementById('btn-colher-sim');
+      const btnColherNao = document.getElementById('btn-colher-nao');
+      const colherEscolhaBotoesEl = document.getElementById('colher-escolha-botoes');
+      const colherQuantidadeDiv = document.getElementById('colher-quantidade-div');
+      const inputQtdColher = document.getElementById('input-qtd-colher');
+      const btnConfirmarColher = document.getElementById('btn-confirmar-colher');
+      let itensNoCarrinho = 0;
+      let carrinhoItensDetalhes = [];
+      let enderecoEntregaInfo = null;
+      let clienteCoords = null;
+      let popupTimeout;
+      let cupomAplicado = null;
+      let ultimosPedidos = [];
+      let quantidadeColheres = 0;
+      const MAX_ULTIMOS_PEDIDOS = 3;
+      let formaPagamentoSelecionada = '';
+      let proximoNumeroPedido = parseInt(localStorage.getItem('proximoNumeroPedido')) || 1;
+      let taxaEntregaAtual = 0;
+      let tempoEntregaEstimadoAtual = "";
+      let produtoAtualParaAdicionais = null;
+      let adicionaisTemporarios = [];
+      let quantidadeProdutoAtualParaAdicionais = 1;
+      const LOJA_LAT = -16.575869267985677;
+      const LOJA_LON = -49.38511520596205;
+      const RAIO_MAXIMO_KM = 12;
+      const CUPONS_VALIDOS = { "AMAZONIA10": { tipo: "percentual", valor: 10 }, "TRIUNFO5": { tipo: "fixo", valor: 5 }, "CLIENTEVIP": { tipo: "percentual", valor: 15 } };
+
+      // =======================================================================
+      // FUNÇÃO DE CARREGAMENTO DE PRODUTOS - VERSÃO DEFINITIVA
+      // =======================================================================
+ async function carregarProdutosDoFirebase() {
+            const listaProdutosEl = document.getElementById('lista-produtos');
+            listaProdutosEl.innerHTML = '<p style="color:white; text-align:center; font-size: 1.2rem;">Buscando nossas delícias...</p>';
+            try {
+                const adicionaisPromise = getDocs(collection(db, 'adicionais'));
+                const produtosPromise = getDocs(collection(db, 'produtos'));
+                const [adicionaisSnapshot, produtosSnapshot] = await Promise.all([adicionaisPromise, produtosPromise]);
+
+                const adicionaisMap = {};
+                adicionaisSnapshot.forEach(doc => {
+                    adicionaisMap[doc.id] = { id: doc.id, ...doc.data() };
+                });
+
+                listaProdutosEl.innerHTML = '';
+
+                produtosSnapshot.forEach(doc => {
+                    const produtoData = doc.data();
+                    if (!produtoData.disponivel) return;
+
+                    // Limpeza dos dados para garantir
+                    const nomeLimpo = produtoData.nome ? String(produtoData.nome).trim() : '';
+                    const descricaoLimpa = produtoData.descricao ? String(produtoData.descricao).trim() : '';
+                    const categoriaLimpa = produtoData.categoria ? String(produtoData.categoria).replace(/\s+/g, ' ').trim() : '';
+                    
+                    // AQUI ESTÁ A MUDANÇA: Voltando a usar a URL do banco
+                    const imagemUrlLimpa = produtoData.imagen_url ? String(produtoData.imagen_url).trim() : '';
+
+                    const produtoDiv = document.createElement('div');
+                    produtoDiv.className = 'produto';
+                    
+                    // Configuração dos data-attributes
+                    produtoDiv.dataset.categoria = categoriaLimpa;
+                    produtoDiv.dataset.idProduto = doc.id.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+                    produtoDiv.dataset.nome = nomeLimpo;
+                    produtoDiv.dataset.preco = produtoData.preco;
+                    produtoDiv.dataset.descricao = descricaoLimpa;
+                    const adicionaisDoProdutoArray = [];
+                    if (produtoData.adicionais_disponiveis && Array.isArray(produtoData.adicionais_disponiveis)) {
+                        produtoData.adicionais_disponiveis.forEach(adicionalId => {
+                            if (adicionaisMap[adicionalId]) {
+                                adicionaisDoProdutoArray.push(adicionaisMap[adicionalId]);
+                            }
+                        });
+                    }
+                    produtoDiv.dataset.adicionais = JSON.stringify(adicionaisDoProdutoArray).replace(/"/g, "'");
+                    produtoDiv.dataset.imagenUrl = imagemUrlLimpa;
+
+                    // Criação dos elementos
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imagemUrlLimpa; // Usando a URL limpa do banco
+                    imgElement.alt = nomeLimpo;
+                    imgElement.onerror = function() {
+                        console.error(`Falha ao carregar imagem para o produto: ${nomeLimpo}. URL: ${this.src}`);
+                        this.style.display = 'none';
+                    };
+                    
+                    const h3Element = document.createElement('h3');
+                    h3Element.textContent = nomeLimpo;
+
+                    const descElement = document.createElement('p');
+                    descElement.className = 'descricao-produto';
+                    descElement.textContent = descricaoLimpa;
+
+                    const precoElement = document.createElement('p');
+                    precoElement.className = 'preco';
+                    precoElement.textContent = `R$ ${(produtoData.preco || 0).toFixed(2).replace('.', ',')}`;
+
+                    const qtdContainer = document.createElement('div');
+                    qtdContainer.className = 'quantidade-produto-controle';
+                    qtdContainer.innerHTML = `
+                        <button class="btn-qtd-produto-menos" type="button">-</button>
+                        <input type="number" class="input-qtd-produto" value="1" min="1" max="99" readonly>
+                        <button class="btn-qtd-produto-mais" type="button">+</button>
+                    `;
+
+                    const addButton = document.createElement('button');
+                    addButton.className = 'adicionar';
+                    addButton.textContent = 'Adicionar';
+                    
+                    produtoDiv.appendChild(imgElement);
+                    produtoDiv.appendChild(h3Element);
+                    produtoDiv.appendChild(descElement);
+                    produtoDiv.appendChild(precoElement);
+                    produtoDiv.appendChild(qtdContainer);
+                    produtoDiv.appendChild(addButton);
+
+                    listaProdutosEl.appendChild(produtoDiv);
+                });
+                
+                configurarEventListenersDosProdutos();
+                aplicarFiltrosProdutos();
+
+            } catch (error) {
+                console.error("Erro ao buscar produtos do Firebase:", error);
+                listaProdutosEl.innerHTML = '<p style="color: #f8d7da; text-align:center;">Não foi possível carregar o cardápio. Tente recarregar a página.</p>';
+            }
+        }
+
+      function configurarEventListenersDosProdutos() {
+        produtosEl = document.querySelectorAll('.produto'); // Atualiza a referência
+        produtosEl.forEach(produtoCard => {
+          const btnAdicionar = produtoCard.querySelector('.adicionar');
+          if (btnAdicionar) {
+            btnAdicionar.addEventListener('click', () => abrirModalAdicionais(produtoCard));
+          }
+
+          const btnMenos = produtoCard.querySelector('.btn-qtd-produto-menos');
+          const btnMais = produtoCard.querySelector('.btn-qtd-produto-mais');
+          const inputQtd = produtoCard.querySelector('.input-qtd-produto');
+
+          if (btnMenos && btnMais && inputQtd) {
+            btnMenos.addEventListener('click', () => {
+              let qtd = parseInt(inputQtd.value);
+              if (qtd > 1) {
+                inputQtd.value = qtd - 1;
+              }
+            });
+            btnMais.addEventListener('click', () => {
+              let qtd = parseInt(inputQtd.value);
+              inputQtd.value = qtd + 1;
+            });
+          }
+        });
+      }
+
+      // --- FUNÇÕES DE LÓGICA DO APP (INTACTAS DO SEU CÓDIGO ORIGINAL) ---
+      function formatarPreco(valor) { return (valor || 0).toFixed(2).replace('.', ','); }
+
+      function aplicarFiltrosProdutos() {
+        const categoriaAtivaEl = document.querySelector('.categorias button.active');
+        const categoriaSelecionada = categoriaAtivaEl ? categoriaAtivaEl.dataset.categoria : 'todos';
+        const termoBusca = inputBuscaProdutoEl.value.toLowerCase().trim();
+        produtosEl.forEach(produto => {
+          const nomeProduto = produto.dataset.nome.toLowerCase();
+          const categoriaProduto = produto.dataset.categoria;
+          const atendeCategoria = (categoriaSelecionada === 'todos' || categoriaProduto === categoriaSelecionada);
+          const atendeBusca = (termoBusca === '' || nomeProduto.includes(termoBusca));
+          produto.classList.toggle('escondido', !(atendeCategoria && atendeBusca));
+        });
+      }
+
+      // ... (o restante de todas as suas funções originais vêm aqui)
+      function verificarHorarioFuncionamento() { const agora = new Date(); const diaSemana = agora.getDay(); const hora = agora.getHours(); const minuto = agora.getMinutes(); const horaDecimal = hora + minuto / 60; switch (diaSemana) { case 0: return horaDecimal >= 11 && horaDecimal < 19.5; case 1: return horaDecimal >= 12 && horaDecimal < 23; case 2: return false; case 3: case 4: case 5: return horaDecimal >= 12 && horaDecimal < 23; case 6: return horaDecimal >= 11 && horaDecimal < 23; default: return false; } }
+      function atualizarStatusFuncionamentoDisplay() { if (!statusAbertoFechadoEl) return; if (verificarHorarioFuncionamento()) { statusAbertoFechadoEl.textContent = 'Aberto'; statusAbertoFechadoEl.className = 'aberto'; } else { statusAbertoFechadoEl.textContent = 'Fechado'; statusAbertoFechadoEl.className = 'fechado'; } }
+      async function obterDistanciaDeRota(origemCoords, destinoCoords) { const GOOGLE_API_KEY = 'AIzaSyAOYSuNCGxr8ZilsArGWqTd3D-y9jKUiBY'; const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origemCoords.latitude},${origemCoords.longitude}&destinations=${destinoCoords.latitude},${destinoCoords.longitude}&mode=driving&language=pt-BR&units=metric&key=${GOOGLE_API_KEY}`; try { const response = await fetch(url); const data = await response.json(); if (data.status === 'OK' && data.rows[0].elements[0].status === 'OK') { const element = data.rows[0].elements[0]; const distanciaKm = element.distance.value / 1000; const tempoTexto = element.duration.text; return { distanciaKm, tempoTexto }; } else { console.error('Erro na API Distance Matrix:', data.status, data.rows[0].elements[0].status); return null; } } catch (error) { console.error('Falha ao buscar distância da rota:', error); return null; } }
+      function validarEGuiar(elemento, mensagemErro, secaoParaScroll = null) { mostrarPopup(mensagemErro, 'erro'); const elParaScroll = secaoParaScroll || elemento; if (elemento && typeof elemento.focus === 'function') { elemento.focus(); } if (elParaScroll && typeof elParaScroll.scrollIntoView === 'function') { setTimeout(() => { elParaScroll.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100); } return false; }
+      function calcularTaxaEntrega(distanciaKm) { if (distanciaKm === null || typeof distanciaKm === 'undefined' || distanciaKm > RAIO_MAXIMO_KM) return 0; if (distanciaKm <= 3) return 5.00; if (distanciaKm > 3 && distanciaKm <= 6) return 8.00; if (distanciaKm > 6 && distanciaKm <= 9) return 10.00; if (distanciaKm > 9 && distanciaKm <= RAIO_MAXIMO_KM) return 12.00; return 0; }
+      function salvarDadosClienteNoLocalStorage() { localStorage.setItem('trilhasAmazoniaCarrinhoItens', JSON.stringify(carrinhoItensDetalhes)); localStorage.setItem('trilhasAmazoniaItensNoCarrinho', itensNoCarrinho.toString()); if (clienteNomeEl.value.trim()) localStorage.setItem('trilhasAmazoniaNomeCliente', clienteNomeEl.value.trim()); if (enderecoEntregaInfo) localStorage.setItem('trilhasAmazoniaEnderecoEntrega', enderecoEntregaInfo); else localStorage.removeItem('trilhasAmazoniaEnderecoEntrega'); if (clienteCoords) localStorage.setItem('trilhasAmazoniaClienteCoords', JSON.stringify(clienteCoords)); else localStorage.removeItem('trilhasAmazoniaClienteCoords'); if (cupomAplicado) localStorage.setItem('trilhasAmazoniaCupomAplicado', JSON.stringify(cupomAplicado)); else localStorage.removeItem('trilhasAmazoniaCupomAplicado'); localStorage.setItem('trilhasAmazoniaUltimosPedidos', JSON.stringify(ultimosPedidos)); if (formaPagamentoSelecionada) localStorage.setItem('trilhasAmazoniaFormaPagamento', formaPagamentoSelecionada); else localStorage.removeItem('trilhasAmazoniaFormaPagamento'); if (formaPagamentoSelecionada === 'Dinheiro' && trocoParaEl.value.trim()) localStorage.setItem('trilhasAmazoniaTrocoPara', trocoParaEl.value.trim()); else localStorage.removeItem('trilhasAmazoniaTrocoPara'); localStorage.setItem('proximoNumeroPedido', proximoNumeroPedido.toString()); }
+      function carregarDadosDoLocalStorage() { const carrinhoSalvo = localStorage.getItem('trilhasAmazoniaCarrinhoItens'); const itensNoCarrinhoSalvo = localStorage.getItem('trilhasAmazoniaItensNoCarrinho'); const nomeSalvo = localStorage.getItem('trilhasAmazoniaNomeCliente'); const enderecoSalvo = localStorage.getItem('trilhasAmazoniaEnderecoEntrega'); const clienteCoordsSalvo = localStorage.getItem('trilhasAmazoniaClienteCoords'); const cupomSalvo = localStorage.getItem('trilhasAmazoniaCupomAplicado'); const ultimosPedidosSalvos = localStorage.getItem('trilhasAmazoniaUltimosPedidos'); const formaPagamentoSalva = localStorage.getItem('trilhasAmazoniaFormaPagamento'); const trocoParaSalvo = localStorage.getItem('trilhasAmazoniaTrocoPara'); proximoNumeroPedido = parseInt(localStorage.getItem('proximoNumeroPedido')) || 1; if (carrinhoSalvo) carrinhoItensDetalhes = JSON.parse(carrinhoSalvo); if (itensNoCarrinhoSalvo) itensNoCarrinho = parseInt(itensNoCarrinhoSalvo, 10) || 0; if (nomeSalvo) clienteNomeEl.value = nomeSalvo; if (enderecoSalvo) { enderecoEntregaInfo = enderecoSalvo; enderecoConfirmadoMsgEl.textContent = "Usaremos o último nome e endereço informados."; enderecoConfirmadoMsgEl.style.display = 'block'; } if (clienteCoordsSalvo) clienteCoords = JSON.parse(clienteCoordsSalvo); if (cupomSalvo) cupomAplicado = JSON.parse(cupomSalvo); if (ultimosPedidosSalvos) ultimosPedidos = JSON.parse(ultimosPedidosSalvos); if (formaPagamentoSalva) { formaPagamentoSelectEl.value = formaPagamentoSalva; formaPagamentoSelecionada = formaPagamentoSalva; trocoParaEl.classList.toggle('escondido', formaPagamentoSalva !== 'Dinheiro'); if (formaPagamentoSalva === 'Dinheiro' && trocoParaSalvo) { trocoParaEl.value = trocoParaSalvo; } } atualizarContadorCarrinho(); renderizarUltimosPedidos(); }
+      function atualizarContadorCarrinho() { if (contadorCarrinhoHeaderEl) contadorCarrinhoHeaderEl.textContent = itensNoCarrinho; }
+      function mostrarPopup(mensagem, tipo = 'sucesso') { popupMensagemEl.textContent = mensagem; popupEl.style.backgroundColor = tipo === 'erro' ? 'var(--cor-erro)' : tipo === 'aviso' ? 'var(--cor-aviso)' : 'var(--cor-sucesso)'; popupEl.classList.remove('escondido'); popupEl.style.opacity = '1'; popupEl.style.top = '20px'; if (popupTimeout) clearTimeout(popupTimeout); popupTimeout = setTimeout(() => { fecharPopup(); }, 3500); }
+      window.fecharPopup = function () { popupEl.style.opacity = '0'; popupEl.style.top = '-100px'; setTimeout(() => { popupEl.classList.add('escondido'); }, 500); if (popupTimeout) clearTimeout(popupTimeout); };
+      function abrirModalCarrinho() { try { renderizarCarrinhoModal(); } catch (e) { console.error("Erro CRÍTICO ao renderizar modal do carrinho:", e); } modalCarrinhoOverlayEl.classList.add('ativo'); modalCarrinhoEl.classList.remove('escondido'); document.body.style.overflow = 'hidden'; };
+      function fecharModalCarrinho() { modalCarrinhoOverlayEl.classList.remove('ativo'); modalCarrinhoEl.classList.add('escondido'); document.body.style.overflow = ''; };
+      function abrirModalColher() { colherEscolhaBotoesEl.classList.remove('escondido'); colherQuantidadeDiv.classList.add('escondido'); inputQtdColher.value = '1'; modalColherOverlayEl.classList.add('ativo'); modalColherEl.classList.remove('escondido'); }
+      function fecharModalColher() { modalColherOverlayEl.classList.remove('ativo'); modalColherEl.classList.add('escondido'); }
+      window.aplicarCupom = function () { const codigoDigitado = inputCupomEl.value.trim().toUpperCase(); cupomFeedbackEl.textContent = ''; cupomFeedbackEl.className = ''; if (!codigoDigitado) { cupomFeedbackEl.textContent = "Digite um código."; cupomFeedbackEl.classList.add('aviso'); return; } const cupomInfo = CUPONS_VALIDOS[codigoDigitado]; if (cupomInfo) { cupomAplicado = { ...cupomInfo, codigo: codigoDigitado }; cupomFeedbackEl.textContent = `Cupom "${codigoDigitado}" aplicado!`; cupomFeedbackEl.classList.add('sucesso'); inputCupomEl.value = ''; } else { cupomAplicado = null; cupomFeedbackEl.textContent = "Cupom inválido."; cupomFeedbackEl.classList.add('erro'); } renderizarCarrinhoModal(); salvarDadosClienteNoLocalStorage(); };
+      function recalcularPrecoItemCarrinho(itemCarrinho) { let precoAdicionais = 0; if (itemCarrinho.adicionaisSelecionados) { itemCarrinho.adicionaisSelecionados.forEach(ad => precoAdicionais += ad.preco); } itemCarrinho.precoTotalItem = itemCarrinho.precoBase + precoAdicionais; }
+      function abrirModalAdicionais(produtoCard) {
+        let listaDeAdicionais = []; const adicionaisAttr = produtoCard.dataset.adicionais; if (adicionaisAttr) { try { listaDeAdicionais = JSON.parse(adicionaisAttr.replace(/'/g, '"')); } catch (e) { console.error("Erro ao parsear JSON de adicionais:", e); listaDeAdicionais = []; } }
+        if (listaDeAdicionais.length === 0) { const qtd = parseInt(produtoCard.querySelector('.input-qtd-produto').value); const itemSemAdicional = { idUnicoCarrinho: Date.now() + Math.random().toString(36).substr(2, 9), nome: produtoCard.dataset.nome, precoBase: parseFloat(produtoCard.dataset.preco), quantidade: qtd, imagemUrl: produtoCard.dataset.imagenUrl, descricao: produtoCard.dataset.descricao, adicionaisSelecionados: [], precoTotalItem: 0 }; recalcularPrecoItemCarrinho(itemSemAdicional); carrinhoItensDetalhes.push(itemSemAdicional); itensNoCarrinho += qtd; atualizarEsalvarCarrinho(); mostrarPopup(`"${itemSemAdicional.nome}" adicionado ao carrinho!`); produtoCard.querySelector('.input-qtd-produto').value = 1; return; }
+        produtoAtualParaAdicionais = { idProdutoOriginal: produtoCard.dataset.idProduto, nome: produtoCard.dataset.nome, precoBase: parseFloat(produtoCard.dataset.preco), imagemUrl: produtoCard.dataset.imagenUrl, descricao: produtoCard.dataset.descricao }; quantidadeProdutoAtualParaAdicionais = parseInt(produtoCard.querySelector('.input-qtd-produto').value); adicionaisTemporarios = []; modalAdicionaisTituloEl.textContent = `Personalize: ${produtoAtualParaAdicionais.nome}`; modalAdicionaisConteudoEl.innerHTML = ''; let precoTotalItemAtual = produtoAtualParaAdicionais.precoBase; listaDeAdicionais.forEach(adicional => { const label = document.createElement('label'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.value = adicional.id; checkbox.dataset.adicionalId = adicional.id; checkbox.dataset.adicionalPreco = adicional.preco; checkbox.addEventListener('change', function () { adicionaisTemporarios = []; precoTotalItemAtual = produtoAtualParaAdicionais.precoBase; modalAdicionaisConteudoEl.querySelectorAll('input[type="checkbox"]:checked').forEach(chk => { const adEncontrado = listaDeAdicionais.find(ad => ad.id === chk.dataset.adicionalId); if (adEncontrado) { adicionaisTemporarios.push(adEncontrado); precoTotalItemAtual += parseFloat(chk.dataset.adicionalPreco); } }); modalAdicionaisPrecoTotalItemEl.textContent = `Preço Total do Item: R$ ${formatarPreco(precoTotalItemAtual * quantidadeProdutoAtualParaAdicionais)}`; }); label.appendChild(checkbox); label.appendChild(document.createTextNode(` ${adicional.nome} (+ R$ ${formatarPreco(adicional.preco)})`)); modalAdicionaisConteudoEl.appendChild(label); }); modalAdicionaisPrecoTotalItemEl.textContent = `Preço Total do Item: R$ ${formatarPreco(precoTotalItemAtual * quantidadeProdutoAtualParaAdicionais)}`; modalAdicionaisOverlayEl.classList.add('ativo'); modalAdicionaisEl.classList.remove('escondido'); document.body.style.overflow = 'hidden';
+      }
+      function fecharModalAdicionais() { modalAdicionaisOverlayEl.classList.remove('ativo'); modalAdicionaisEl.classList.add('escondido'); if (modalCarrinhoEl.classList.contains('escondido') && modalColherEl.classList.contains('escondido')) { document.body.style.overflow = ''; } produtoAtualParaAdicionais = null; adicionaisTemporarios = []; }
+      if (btnConfirmarAdicionaisECarrinho) { btnConfirmarAdicionaisECarrinho.addEventListener('click', () => { if (!produtoAtualParaAdicionais) return; const novoItemCarrinho = { idUnicoCarrinho: Date.now() + Math.random().toString(36).substr(2, 9), nome: produtoAtualParaAdicionais.nome, precoBase: produtoAtualParaAdicionais.precoBase, quantidade: quantidadeProdutoAtualParaAdicionais, imagemUrl: produtoAtualParaAdicionais.imagemUrl, descricao: produtoAtualParaAdicionais.descricao, adicionaisSelecionados: [...adicionaisTemporarios], precoTotalItem: 0 }; recalcularPrecoItemCarrinho(novoItemCarrinho); carrinhoItensDetalhes.push(novoItemCarrinho); itensNoCarrinho += novoItemCarrinho.quantidade; const produtoCardOriginal = document.querySelector(`.produto[data-id-produto="${produtoAtualParaAdicionais.idProdutoOriginal}"]`); if (produtoCardOriginal) { const inputQtdOriginal = produtoCardOriginal.querySelector('.input-qtd-produto'); if (inputQtdOriginal) inputQtdOriginal.value = 1; const precoElOriginal = produtoCardOriginal.querySelector('.preco'); if (precoElOriginal) precoElOriginal.textContent = `R$ ${formatarPreco(produtoAtualParaAdicionais.precoBase)}`; } atualizarEsalvarCarrinho(); mostrarPopup(`"${novoItemCarrinho.nome}" adicionado ao carrinho!`); fecharModalAdicionais(); }); }
+      function renderizarCarrinhoModal() {
+        itensCarrinhoListaModalEl.innerHTML = ''; let subTotalItensProdutos = 0; descontoAplicadoInfoEl.textContent = ''; const estamosAbertos = verificarHorarioFuncionamento(); if (avisoHorarioModalEl) { avisoHorarioModalEl.textContent = estamosAbertos ? '' : 'Loja fechada. Por favor, verifique nossos horários.'; avisoHorarioModalEl.style.display = estamosAbertos ? 'none' : 'block'; }
+        if (carrinhoItensDetalhes.length === 0) { itensCarrinhoListaModalEl.innerHTML = '<p style="text-align:center;padding:20px 0;">Seu carrinho está vazio!</p>'; totalPrecoCarrinhoModalEl.textContent = '0,00'; if (taxaEntregaValorModalEl) taxaEntregaValorModalEl.innerHTML = ''; btnFinalizarPedidoWhatsAppModal.disabled = true; cupomAplicado = null; descontoAplicadoInfoEl.textContent = ''; cupomFeedbackEl.textContent = ''; inputCupomEl.value = ''; return; }
+        btnFinalizarPedidoWhatsAppModal.disabled = !estamosAbertos || carrinhoItensDetalhes.length === 0; carrinhoItensDetalhes.forEach((item, index) => {
+          recalcularPrecoItemCarrinho(item); const itemDiv = document.createElement('div'); itemDiv.classList.add('item-carrinho'); const precoTotalPorItemUnidade = item.precoTotalItem; const precoTotalPorItemQtd = precoTotalPorItemUnidade * item.quantidade; subTotalItensProdutos += precoTotalPorItemQtd; let adicionaisSelecionadosHtml = ''; if (item.adicionaisSelecionados && item.adicionaisSelecionados.length > 0) { adicionaisSelecionadosHtml = '<div class="item-carrinho-adicionais-selecionados"><strong>Adicionais:</strong>'; item.adicionaisSelecionados.forEach(ad => { adicionaisSelecionadosHtml += `<span>- ${ad.nome} (+ R$ ${formatarPreco(ad.preco)})</span>`; }); adicionaisSelecionadosHtml += '</div>'; }
+          itemDiv.innerHTML = `<div class="item-carrinho-principal"><img src="${item.imagemUrl || 'https://via.placeholder.com/50'}" alt="${item.nome}" class="item-carrinho-img"><div class="item-carrinho-detalhes"><span class="item-carrinho-nome" title="${item.nome}">${item.nome}</span>${item.descricao ? `<p class="item-carrinho-descricao">${item.descricao}</p>` : ''}</div></div>${adicionaisSelecionadosHtml}<div class="item-carrinho-acoes-wrapper"><div class="item-carrinho-qtd-controle"><button class="btn-qtd" onclick="diminuirQuantidade(${index})">-</button><span class="qtd-valor">${item.quantidade}</span><button class="btn-qtd" onclick="aumentarQuantidade(${index})">+</button></div><span class="item-carrinho-preco">R$ ${formatarPreco(precoTotalPorItemQtd)}</span><button class="item-carrinho-remover" data-index="${index}" title="Remover ${item.nome}">×</button></div>`; itensCarrinhoListaModalEl.appendChild(itemDiv);
+        }); let valorDescontoFinal = 0; if (cupomAplicado) { if (cupomAplicado.tipo === "percentual") valorDescontoFinal = (subTotalItensProdutos * cupomAplicado.valor) / 100; else if (cupomAplicado.tipo === "fixo") valorDescontoFinal = cupomAplicado.valor; valorDescontoFinal = Math.min(valorDescontoFinal, subTotalItensProdutos); descontoAplicadoInfoEl.textContent = `Desconto (${cupomAplicado.codigo}): - R$ ${formatarPreco(valorDescontoFinal)}`; }
+        const subtotalComDesconto = subTotalItensProdutos - valorDescontoFinal; if (taxaEntregaValorModalEl) { if (taxaEntregaAtual > 0) { taxaEntregaValorModalEl.innerHTML = `Taxa de Entrega: <strong>R$ ${formatarPreco(taxaEntregaAtual)}</strong>`; } else if (enderecoEntregaInfo && !taxaEntregaAtual) { taxaEntregaValorModalEl.innerHTML = `Taxa de Entrega: <strong class="aviso">A calcular via WhatsApp</strong>`; } else { taxaEntregaValorModalEl.innerHTML = ''; } }
+        const totalGeral = subtotalComDesconto + taxaEntregaAtual; totalPrecoCarrinhoModalEl.textContent = formatarPreco(totalGeral < 0 ? 0 : totalGeral); document.querySelectorAll('#modal-carrinho .item-carrinho-remover').forEach(botao => { botao.addEventListener('click', (event) => { removerItemDoCarrinho(parseInt(event.target.dataset.index)); }); });
+      }
+      function atualizarEsalvarCarrinho() { atualizarContadorCarrinho(); renderizarCarrinhoModal(); salvarDadosClienteNoLocalStorage(); }
+      window.aumentarQuantidade = function (index) { const item = carrinhoItensDetalhes[index]; item.quantidade++; recalcularPrecoItemCarrinho(item); itensNoCarrinho++; atualizarEsalvarCarrinho(); };
+      window.diminuirQuantidade = function (index) { const item = carrinhoItensDetalhes[index]; if (item.quantidade > 1) { item.quantidade--; recalcularPrecoItemCarrinho(item); itensNoCarrinho--; } else { removerItemDoCarrinho(index); } atualizarEsalvarCarrinho(); };
+      function removerItemDoCarrinho(index) { const itemRemovido = carrinhoItensDetalhes[index]; if (!itemRemovido) return; itensNoCarrinho -= itemRemovido.quantidade; carrinhoItensDetalhes.splice(index, 1); atualizarEsalvarCarrinho(); }
+      window.limparCarrinhoCompleto = function () { if (carrinhoItensDetalhes.length === 0) { mostrarPopup("O carrinho já está vazio.", "aviso"); return; } if (confirm("Tem certeza que deseja limpar todos os itens do carrinho?")) { carrinhoItensDetalhes = []; itensNoCarrinho = 0; cupomAplicado = null; inputCupomEl.value = ''; cupomFeedbackEl.textContent = ''; descontoAplicadoInfoEl.textContent = ''; formaPagamentoSelectEl.value = ''; trocoParaEl.value = ''; trocoParaEl.classList.add('escondido'); formaPagamentoSelecionada = ''; taxaEntregaAtual = 0; tempoEntregaEstimadoAtual = ""; if (taxaEntregaValorModalEl) taxaEntregaValorModalEl.innerHTML = ''; if (taxaEntregaFeedbackEl) taxaEntregaFeedbackEl.textContent = ''; if (enderecoRaioFeedbackEl) enderecoRaioFeedbackEl.textContent = ''; if (tempoEntregaFeedbackEl) tempoEntregaFeedbackEl.textContent = ''; atualizarContadorCarrinho(); renderizarCarrinhoModal(); salvarDadosClienteNoLocalStorage(); mostrarPopup("Carrinho limpo com sucesso!", "sucesso"); } };
+      window.validarEPreencherEndereco = async function () { const cepClienteInput = cepInputEl.value.replace(/\D/g, ''); cepResultadoEl.textContent = 'Buscando endereço...'; cepResultadoEl.className = ''; enderecoCompletoFormEl.classList.add('escondido'); clienteCoords = null; taxaEntregaAtual = 0; if (cepClienteInput.length !== 8) { cepResultadoEl.textContent = 'CEP inválido. Deve conter 8 números.'; cepResultadoEl.classList.add('erro'); return; } try { const GOOGLE_API_KEY = 'AIzaSyClJwS9QnQJBxZLinQBsahC6DisnfQZ66s'; const urlGoogleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cepClienteInput)}&key=${GOOGLE_API_KEY}&language=pt-BR`; const googleResponse = await fetch(urlGoogleMaps); const googleData = await googleResponse.json(); if (googleData.status !== 'OK' || !googleData.results[0]) { throw new Error('Não foi possível encontrar o endereço para este CEP no Google Maps.'); } const result = googleData.results[0]; const components = result.address_components; const getAddressComponent = (type) => components.find(c => c.types.includes(type))?.long_name || ''; enderecoRuaEl.value = getAddressComponent('route'); enderecoBairroEl.value = getAddressComponent('sublocality_level_1') || getAddressComponent('political'); enderecoCidadeEl.value = getAddressComponent('administrative_area_level_2'); enderecoUfEl.value = getAddressComponent('administrative_area_level_1'); const location = result.geometry.location; clienteCoords = { latitude: location.lat, longitude: location.lng }; cepResultadoEl.textContent = 'Endereço e localização encontrados! Complete os dados abaixo.'; cepResultadoEl.classList.add('sucesso');[enderecoRuaEl, enderecoBairroEl, enderecoCidadeEl, enderecoUfEl].forEach(el => el.readOnly = !!(el.value && el.value.trim() !== '')); enderecoNumeroEl.value = ''; enderecoComplementoEl.value = ''; } catch (error) { console.error("Erro na busca de CEP:", error); cepResultadoEl.textContent = error.message || 'Não foi possível verificar o CEP.'; cepResultadoEl.classList.add('erro'); } finally { enderecoCompletoFormEl.classList.remove('escondido'); enderecoNumeroEl.focus(); salvarDadosClienteNoLocalStorage(); renderizarCarrinhoModal(); } };
+      window.confirmarEnderecoCompleto = async function () {
+        const nomeCliente = clienteNomeEl.value.trim(); if (!nomeCliente) { validarEGuiar(clienteNomeEl, "Por favor, informe seu nome completo.", document.getElementById('cep-section')); return; } const rua = enderecoRuaEl.value.trim(); const numero = enderecoNumeroEl.value.trim(); const complemento = enderecoComplementoEl.value.trim(); const bairro = enderecoBairroEl.value.trim(); const cidade = enderecoCidadeEl.value.trim(); const uf = enderecoUfEl.value.trim(); const cep = cepInputEl.value.replace(/\D/g, ''); if (!rua) { validarEGuiar(enderecoRuaEl, "Por favor, informe a rua.", enderecoRuaEl); return; } if (!numero) { validarEGuiar(enderecoNumeroEl, "Por favor, informe o número.", enderecoNumeroEl); return; } if (!bairro) { validarEGuiar(enderecoBairroEl, "Por favor, informe o bairro.", enderecoBairroEl); return; } if (!cidade) { validarEGuiar(enderecoCidadeEl, "Por favor, informe a cidade.", enderecoCidadeEl); return; } if (!uf) { validarEGuiar(enderecoUfEl, "Por favor, informe o UF.", enderecoUfEl); return; } if (cep.length !== 8) { validarEGuiar(cepInputEl, "CEP inválido. Verifique.", cepInputEl); return; }
+        enderecoEntregaInfo = `${rua}, Nº ${numero}`; if (complemento) enderecoEntregaInfo += `, ${complemento}`; enderecoEntregaInfo += `\nBairro: ${bairro}\nCidade: ${cidade} - ${uf}\nCEP: ${cep}`; enderecoConfirmadoMsgEl.textContent = "Endereço preenchido!"; enderecoConfirmadoMsgEl.className = 'sucesso'; enderecoConfirmadoMsgEl.style.display = 'block'; if (clienteCoords && clienteCoords.latitude && clienteCoords.longitude) { const lojaCoords = { latitude: LOJA_LAT, longitude: LOJA_LON }; const rotaInfo = await obterDistanciaDeRota(lojaCoords, clienteCoords); if (rotaInfo) { const { distanciaKm, tempoTexto } = rotaInfo; if (distanciaKm <= RAIO_MAXIMO_KM) { taxaEntregaAtual = calcularTaxaEntrega(distanciaKm); tempoEntregaEstimadoAtual = tempoTexto; enderecoRaioFeedbackEl.textContent = `Entregamos na sua região! Distância da rota: ${distanciaKm.toFixed(1)} km.`; enderecoRaioFeedbackEl.className = 'sucesso'; taxaEntregaFeedbackEl.textContent = `Taxa por distância: R$ ${formatarPreco(taxaEntregaAtual)}`; taxaEntregaFeedbackEl.className = 'sucesso'; tempoEntregaFeedbackEl.textContent = `Tempo Estimado de Viagem: ${tempoEntregaEstimadoAtual}`; tempoEntregaFeedbackEl.className = 'sucesso'; } else { taxaEntregaAtual = 0; tempoEntregaEstimadoAtual = "Indisponível"; enderecoRaioFeedbackEl.textContent = `Não entregamos na sua região. Distância da rota: ${distanciaKm.toFixed(1)} km (Máx: ${RAIO_MAXIMO_KM} km).`; enderecoRaioFeedbackEl.className = 'erro'; taxaEntregaFeedbackEl.textContent = 'Taxa de Entrega: Indisponível'; taxaEntregaFeedbackEl.className = 'erro'; tempoEntregaFeedbackEl.textContent = 'Tempo Estimado: Indisponível'; tempoEntregaFeedbackEl.className = 'erro'; } } else { taxaEntregaAtual = 0; tempoEntregaEstimadoAtual = "A combinar"; enderecoRaioFeedbackEl.textContent = `Não foi possível calcular a rota automaticamente.`; enderecoRaioFeedbackEl.className = 'aviso'; taxaEntregaFeedbackEl.textContent = `A taxa será combinada via WhatsApp.`; taxaEntregaFeedbackEl.className = 'aviso'; tempoEntregaFeedbackEl.textContent = ``; tempoEntregaFeedbackEl.className = ''; } } else { taxaEntregaAtual = 0; tempoEntregaEstimadoAtual = "A combinar"; enderecoRaioFeedbackEl.textContent = `Não foi possível calcular a distância automaticamente.`; enderecoRaioFeedbackEl.className = 'aviso'; taxaEntregaFeedbackEl.textContent = `A taxa será combinada via WhatsApp.`; taxaEntregaFeedbackEl.className = 'aviso'; tempoEntregaFeedbackEl.textContent = ``; tempoEntregaFeedbackEl.className = ''; } renderizarCarrinhoModal(); salvarDadosClienteNoLocalStorage(); mostrarPopup("Endereço e taxa de entrega confirmados!", "sucesso");
+      };
+      function salvarPedidoAtualComoUltimo() { if (carrinhoItensDetalhes.length === 0) return; let subTotalItens = 0; carrinhoItensDetalhes.forEach(item => { recalcularPrecoItemCarrinho(item); subTotalItens += item.precoTotalItem * item.quantidade; }); let valorDescontoFinal = 0; if (cupomAplicado) { if (cupomAplicado.tipo === "percentual") valorDescontoFinal = (subTotalItens * cupomAplicado.valor) / 100; else if (cupomAplicado.tipo === "fixo") valorDescontoFinal = cupomAplicado.valor; valorDescontoFinal = Math.min(valorDescontoFinal, subTotalItens); } const totalComDescontoETaxa = (subTotalItens - valorDescontoFinal) + taxaEntregaAtual; const numeroDoPedidoAtual = proximoNumeroPedido; const pedidoAtual = { id: new Date().getTime(), numeroPedido: numeroDoPedidoAtual, itens: JSON.parse(JSON.stringify(carrinhoItensDetalhes)), totalPago: totalComDescontoETaxa < 0 ? 0 : totalComDescontoETaxa, subtotalItens: subTotalItens, descontoValor: valorDescontoFinal, taxaEntrega: taxaEntregaAtual, cupomUsado: cupomAplicado ? cupomAplicado.codigo : null, data: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR'), nomeCliente: clienteNomeEl.value.trim(), endereco: enderecoEntregaInfo, clienteCoords: clienteCoords, formaPagamento: formaPagamentoSelecionada, troco: trocoParaEl.value.trim(), tempoEstimado: tempoEntregaEstimadoAtual }; ultimosPedidos.unshift(pedidoAtual); if (ultimosPedidos.length > MAX_ULTIMOS_PEDIDOS) ultimosPedidos.pop(); proximoNumeroPedido++; localStorage.setItem('proximoNumeroPedido', proximoNumeroPedido.toString()); renderizarUltimosPedidos(); return numeroDoPedidoAtual; }
+      function renderizarUltimosPedidos() { listaUltimosPedidosContainerEl.innerHTML = ''; if (ultimosPedidos.length === 0) { semPedidosAnterioresEl.style.display = 'block'; return; } semPedidosAnterioresEl.style.display = 'none'; ultimosPedidos.forEach(pedido => { const pedidoDiv = document.createElement('div'); pedidoDiv.classList.add('pedido-anterior'); let itensHtml = '<ul class="pedido-anterior-itens">'; pedido.itens.forEach(item => { let adicionaisStr = ''; if (item.adicionaisSelecionados && item.adicionaisSelecionados.length > 0) { adicionaisStr = ' (Adicionais: ' + item.adicionaisSelecionados.map(ad => ad.nome).join(', ') + ')'; } itensHtml += `<li>${item.nome}${adicionaisStr} (Qtd: ${item.quantidade})</li>`; }); itensHtml += '</ul>'; pedidoDiv.innerHTML = `<div class="pedido-anterior-header"><strong>Pedido Nº${pedido.numeroPedido} de ${pedido.data}</strong><span>Total: R$ ${formatarPreco(pedido.totalPago)}</span></div>${pedido.nomeCliente ? `<p style="font-size:0.9em; margin-bottom:5px;">Cliente: ${pedido.nomeCliente}</p>` : ''} ${itensHtml} <button class="btn-repetir-pedido" data-pedido-id="${pedido.id}">Repetir Pedido</button>`; listaUltimosPedidosContainerEl.appendChild(pedidoDiv); }); document.querySelectorAll('.btn-repetir-pedido').forEach(btn => { btn.addEventListener('click', function () { repetirPedido(parseInt(this.dataset.pedidoId)); }); }); }
+      function repetirPedido(pedidoId) { const pedidoParaRepetir = ultimosPedidos.find(p => p.id === pedidoId); if (!pedidoParaRepetir) { mostrarPopup("Pedido anterior não encontrado.", 'erro'); return; } if (!confirm("Isso limpará seu carrinho atual e adicionará os itens do pedido selecionado. Continuar?")) return; carrinhoItensDetalhes = JSON.parse(JSON.stringify(pedidoParaRepetir.itens)); itensNoCarrinho = 0; carrinhoItensDetalhes.forEach(item => { recalcularPrecoItemCarrinho(item); itensNoCarrinho += item.quantidade; }); if (pedidoParaRepetir.nomeCliente) clienteNomeEl.value = pedidoParaRepetir.nomeCliente; if (pedidoParaRepetir.endereco) { enderecoEntregaInfo = pedidoParaRepetir.endereco; const partesEndereco = pedidoParaRepetir.endereco.split('\n'); if (partesEndereco.length >= 3) { const linha1 = partesEndereco[0].split(','); enderecoRuaEl.value = linha1[0].trim(); if (linha1[1]) enderecoNumeroEl.value = linha1[1].replace('Nº', '').trim(); if (linha1[2]) enderecoComplementoEl.value = linha1[2].trim(); if (partesEndereco[1]) enderecoBairroEl.value = partesEndereco[1].replace('Bairro:', '').trim(); const cidadeUFCep = partesEndereco[2].split('CEP:'); if (cidadeUFCep[0]) { const cidadeUfPartes = cidadeUFCep[0].replace('Cidade:', '').split(' - '); enderecoCidadeEl.value = cidadeUfPartes[0] ? cidadeUfPartes[0].trim() : ''; enderecoUfEl.value = cidadeUfPartes[1] ? cidadeUfPartes[1].trim() : ''; } if (cidadeUFCep[1]) cepInputEl.value = cidadeUFCep[1].trim().replace(/\D/g, ''); enderecoCompletoFormEl.classList.remove('escondido'); } enderecoConfirmadoMsgEl.textContent = "Nome e endereço do pedido anterior carregados."; enderecoConfirmadoMsgEl.style.display = 'block'; } else { enderecoEntregaInfo = null; cepInputEl.value = '';[enderecoRuaEl, enderecoNumeroEl, enderecoComplementoEl, enderecoBairroEl, enderecoCidadeEl, enderecoUfEl].forEach(el => el.value = ''); enderecoCompletoFormEl.classList.add('escondido'); enderecoConfirmadoMsgEl.style.display = 'none'; } clienteCoords = pedidoParaRepetir.clienteCoords || null; confirmarEnderecoCompleto(); cupomAplicado = pedidoParaRepetir.cupomUsado ? CUPONS_VALIDOS[pedidoParaRepetir.cupomUsado] : null; if (cupomAplicado) inputCupomEl.value = pedidoParaRepetir.cupomUsado; else inputCupomEl.value = ''; if (pedidoParaRepetir.formaPagamento) { formaPagamentoSelectEl.value = pedidoParaRepetir.formaPagamento; formaPagamentoSelecionada = pedidoParaRepetir.formaPagamento; trocoParaEl.classList.toggle('escondido', formaPagamentoSelecionada !== 'Dinheiro'); if (formaPagamentoSelecionada === 'Dinheiro' && pedidoParaRepetir.troco) { trocoParaEl.value = pedidoParaRepetir.troco; } else { trocoParaEl.value = ''; } } else { formaPagamentoSelectEl.value = ''; formaPagamentoSelecionada = ''; trocoParaEl.classList.add('escondido'); trocoParaEl.value = ''; } atualizarEsalvarCarrinho(); mostrarPopup("Itens do pedido anterior adicionados ao carrinho!", 'sucesso'); abrirModalCarrinho(); }
+      function enviarPedidoParaWhatsApp() {
+        const numeroDoPedidoFinal = salvarPedidoAtualComoUltimo(); let mensagem = `🍃 *Pedido Trilhas da Amazônia Triunfo Nº ${numeroDoPedidoFinal}* 🍃\n\n*Cliente:* ${clienteNomeEl.value.trim()}\n\nOlá! Gostaria de fazer o seguinte pedido:\n\n`; let subTotalItensCalc = 0; carrinhoItensDetalhes.forEach(item => { recalcularPrecoItemCarrinho(item); subTotalItensCalc += item.precoTotalItem * item.quantidade; }); let valorDescontoFinalCalc = 0; let totalAposDesconto = subTotalItensCalc; if (cupomAplicado) { if (cupomAplicado.tipo === "percentual") valorDescontoFinalCalc = (subTotalItensCalc * cupomAplicado.valor) / 100; else if (cupomAplicado.tipo === "fixo") valorDescontoFinalCalc = cupomAplicado.valor; valorDescontoFinalCalc = Math.min(valorDescontoFinalCalc, subTotalItensCalc); totalAposDesconto = subTotalItensCalc - valorDescontoFinalCalc; } carrinhoItensDetalhes.forEach(item => { mensagem += `*${item.nome}* (R$ ${formatarPreco(item.precoBase)})\n  Qtd: ${item.quantidade}\n`; if (item.adicionaisSelecionados && item.adicionaisSelecionados.length > 0) { mensagem += `  Adicionais:\n`; item.adicionaisSelecionados.forEach(ad => { mensagem += `    - ${ad.nome} (+ R$ ${formatarPreco(ad.preco)})\n`; }); } mensagem += `  Subtotal Item: R$ ${formatarPreco(item.precoTotalItem * item.quantidade)}\n\n`; }); mensagem += `------------------------------------\n`; mensagem += `Subtotal dos Itens: R$ ${formatarPreco(subTotalItensCalc)}\n`; if (cupomAplicado) mensagem += `Desconto (${cupomAplicado.codigo}): - R$ ${formatarPreco(valorDescontoFinalCalc)}\n`; if (taxaEntregaAtual > 0) { mensagem += `Taxa de Entrega: R$ ${formatarPreco(taxaEntregaAtual)}\n`; } else { mensagem += `Taxa de Entrega: A combinar\n`; }
+        const CUSTO_COLHER = 0.30; let custoColheres = 0; if (quantidadeColheres > 0) { custoColheres = quantidadeColheres * CUSTO_COLHER; mensagem += `Colheres (${quantidadeColheres}x): R$ ${formatarPreco(custoColheres)}\n`; }
+        const totalGeral = totalAposDesconto + taxaEntregaAtual + custoColheres; mensagem += `*TOTAL DO PEDIDO: R$ ${formatarPreco(totalGeral)}*\n\n`; mensagem += `*FORMA DE PAGAMENTO:* ${formaPagamentoSelectEl.options[formaPagamentoSelectEl.selectedIndex].text}\n`; if (formaPagamentoSelecionada === 'Dinheiro' && trocoParaEl.value.trim()) { mensagem += `  Troco para: R$ ${trocoParaEl.value.trim()}\n`; } else if (formaPagamentoSelecionada === 'Dinheiro') { mensagem += `  (Não precisa de troco ou não informado)\n`; } mensagem += `\n*ENDEREÇO PARA ENTREGA:*\n${enderecoEntregaInfo}\n`; let linkGoogleMaps = ''; if (clienteCoords && clienteCoords.latitude && clienteCoords.longitude) { linkGoogleMaps = `https://www.google.com/maps?q=${clienteCoords.latitude},${clienteCoords.longitude}`; } else { const enderecoParaUrl = encodeURIComponent(enderecoEntregaInfo.replace(/\n/g, ', ')); linkGoogleMaps = `https://www.google.com/maps?q=${enderecoParaUrl}`; }
+        mensagem += `\n*Ver no mapa:*\n${linkGoogleMaps}\n`; if (tempoEntregaEstimadoAtual && tempoEntregaEstimadoAtual !== "Indisponível") { mensagem += `\n*Tempo Estimado de Entrega:* ${tempoEntregaEstimadoAtual}\n`; }
+        mensagem += "\nObrigado(a)! Aguardo a confirmação. 😊"; const numeroWhatsApp = "5562982714775"; const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`; window.open(urlWhatsApp, '_blank'); carrinhoItensDetalhes = []; itensNoCarrinho = 0; cupomAplicado = null; inputCupomEl.value = ''; cupomFeedbackEl.textContent = ''; descontoAplicadoInfoEl.textContent = ''; formaPagamentoSelectEl.value = ''; formaPagamentoSelecionada = ''; trocoParaEl.value = ''; trocoParaEl.classList.add('escondido'); taxaEntregaAtual = 0; tempoEntregaEstimadoAtual = ""; quantidadeColheres = 0; if (taxaEntregaValorModalEl) taxaEntregaValorModalEl.innerHTML = ''; atualizarContadorCarrinho(); renderizarCarrinhoModal(); fecharModalCarrinho(); salvarDadosClienteNoLocalStorage(); mostrarPopup("Pedido enviado para WhatsApp! ✅");
+      }
+
+      // Adicionando listeners aos botões
+      btnColherSim.addEventListener('click', () => { colherEscolhaBotoesEl.classList.add('escondido'); colherQuantidadeDiv.classList.remove('escondido'); inputQtdColher.focus(); });
+      btnColherNao.addEventListener('click', () => { quantidadeColheres = 0; fecharModalColher(); enviarPedidoParaWhatsApp(); });
+      btnConfirmarColher.addEventListener('click', () => { quantidadeColheres = parseInt(inputQtdColher.value) || 0; fecharModalColher(); enviarPedidoParaWhatsApp(); });
+      btnFinalizarPedidoWhatsAppModal.addEventListener('click', async () => {
+        if (!verificarHorarioFuncionamento()) { const modalFooter = document.querySelector('#modal-carrinho .modal-footer'); validarEGuiar(null, "Desculpe, estamos fechados. Por favor, verifique os horários.", avisoHorarioModalEl || modalFooter); return; } if (!clienteNomeEl.value.trim()) { validarEGuiar(clienteNomeEl, "Por favor, informe seu nome completo.", document.getElementById('cep-section')); return; } if (!enderecoEntregaInfo) { mostrarPopup("Por favor, confirme seu endereço de entrega primeiro na seção 'Endereço para Entrega'.", 'erro'); fecharModalCarrinho(); let elFoco = cepInputEl; if (enderecoCompletoFormEl.classList.contains('escondido') || !cepInputEl.value.trim()) { elFoco = cepInputEl; } else if (!enderecoNumeroEl.value.trim()) { elFoco = enderecoNumeroEl; } else { elFoco = document.getElementById('btn-confirmar-endereco') || cepInputEl; } validarEGuiar(elFoco, "Confirme seu endereço de entrega.", document.getElementById('cep-section')); return; } if (taxaEntregaAtual === 0 && clienteCoords) { mostrarPopup("Endereço fora do raio de entrega.", "erro"); return; } else if (taxaEntregaAtual === 0 && !clienteCoords) { if (!confirm("A taxa de entrega será combinada via WhatsApp. Deseja continuar?")) { return; } } if (!formaPagamentoSelecionada) { if (modalCarrinhoEl.classList.contains('escondido')) abrirModalCarrinho(); validarEGuiar(formaPagamentoSelectEl, "Selecione uma forma de pagamento.", formaPagamentoSelectEl); return; } if (formaPagamentoSelecionada === 'Dinheiro' && !trocoParaEl.value.trim() && !confirm("Pagamento em Dinheiro selecionado, mas não informou o valor para troco. Continuar mesmo assim?")) { if (modalCarrinhoEl.classList.contains('escondido')) abrirModalCarrinho(); validarEGuiar(trocoParaEl, "Informe o valor para troco ou cancele para alterar.", trocoParaEl); return; }
+        abrirModalColher();
+      });
+      if (carrinhoIconHeaderEl) carrinhoIconHeaderEl.addEventListener('click', abrirModalCarrinho);
+      if (document.querySelector('.carrinho-acoes-modal .continuar-comprando')) document.querySelector('.carrinho-acoes-modal .continuar-comprando').addEventListener('click', fecharModalCarrinho);
+      if (document.querySelector('.carrinho-acoes-modal .limpar-carrinho-btn')) document.querySelector('.carrinho-acoes-modal .limpar-carrinho-btn').addEventListener('click', window.limparCarrinhoCompleto);
+      if (document.getElementById('fechar-modal-carrinho-btn')) document.getElementById('fechar-modal-carrinho-btn').addEventListener('click', fecharModalCarrinho);
+      if (btnFecharModalAdicionais) btnFecharModalAdicionais.addEventListener('click', fecharModalAdicionais);
+      if (btnFecharModalAdicionaisFooter) btnFecharModalAdicionaisFooter.addEventListener('click', fecharModalAdicionais);
+      botoesCategoria.forEach(botao => { botao.addEventListener('click', () => { botoesCategoria.forEach(btn => btn.classList.remove('active')); botao.classList.add('active'); aplicarFiltrosProdutos(); }); });
+      if (inputBuscaProdutoEl) inputBuscaProdutoEl.addEventListener('input', aplicarFiltrosProdutos);
+
+      // --- INICIALIZAÇÃO ---
+      carregarDadosDoLocalStorage();
+      carregarProdutosDoFirebase();
+      atualizarStatusFuncionamentoDisplay();
+      setInterval(atualizarStatusFuncionamentoDisplay, 60000);
+    });
+  </script>
+</body>
+
+</html>

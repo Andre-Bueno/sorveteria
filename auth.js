@@ -1,288 +1,113 @@
-// --- INÍCIO: CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE ---
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+// Importe as funções necessárias dos SDKs do Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-// SUAS CONFIGURAÇÕES DO FIREBASE AQUI
+// A configuração do seu aplicativo da web do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
     authDomain: "bdsorveteria-2690d.firebaseapp.com",
     projectId: "bdsorveteria-2690d",
-    storageBucket: "bdsorveteria-2690d.appspot.com",
+    storageBucket: "bdsorveteria-2690d.firebasestorage.app",
     messagingSenderId: "1004178621874",
     appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
     measurementId: "G-SMW22TX942"
 };
 
+// Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
-// --- FIM: CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE ---
+const db = getFirestore(app); // Inicializa o Firestore
 
-// Função para exibir mensagens (erro ou sucesso)
-function showFeedbackMessage(elementId, message, type = 'error') { // 'error' ou 'success'
-    const messageElement = document.getElementById(elementId);
-    if (messageElement) {
-        messageElement.textContent = message;
-        messageElement.classList.remove('error-message', 'success-message'); // Remove classes antigas
-        if (type === 'error') {
-            messageElement.classList.add('error-message');
-        } else if (type === 'success') {
-            messageElement.classList.add('success-message');
-            // Você pode adicionar um CSS para 'success-message' no seu estilo
-            // Ex: .success-message { color: var(--cor-sucesso); font-weight: 500; }
-        }
-        messageElement.style.display = 'block';
-    }
-}
+// --- LÓGICA DA PÁGINA DE LOGIN ---
 
-// Função para limpar mensagens
-function clearFeedbackMessage(elementId) {
-    const messageElement = document.getElementById(elementId);
-    if (messageElement) {
-        messageElement.textContent = '';
-        messageElement.style.display = 'none';
-        messageElement.classList.remove('error-message', 'success-message');
-    }
-}
-
-// =========================================================
-// Lógica de Registro (register.html)
-// =========================================================
-const registerBtn = document.getElementById('register-btn');
-if (registerBtn) {
-    registerBtn.addEventListener('click', async () => {
-        const name = document.getElementById('register-name').value.trim();
-        const email = document.getElementById('register-email').value.trim();
-        const password = document.getElementById('register-password').value.trim();
-        const confirmPassword = document.getElementById('register-confirm-password').value.trim();
-
-        clearFeedbackMessage('register-error-message'); // Limpa antes de exibir nova
-
-        if (!name) {
-            showFeedbackMessage('register-error-message', 'Por favor, digite seu nome completo.', 'error');
-            return;
-        }
-        if (!email || !password || !confirmPassword) {
-            showFeedbackMessage('register-error-message', 'Por favor, preencha todos os campos.', 'error');
-            return;
-        }
-        if (password.length < 6) {
-            showFeedbackMessage('register-error-message', 'A senha deve ter no mínimo 6 caracteres.', 'error');
-            return;
-        }
-        if (password !== confirmPassword) {
-            showFeedbackMessage('register-error-message', 'As senhas não coincidem.', 'error');
-            return;
-        }
-
-        try {
-            // Cria o usuário no Firebase Authentication
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // Salva o perfil do usuário no Firestore
-            await setDoc(doc(db, 'users', user.uid), {
-                name: name,
-                email: email,
-                role: 'customer', // Define o papel padrão como 'customer'
-                createdAt: new Date()
-            });
-
-            showFeedbackMessage('register-error-message', 'Cadastro realizado com sucesso! Redirecionando para o login...', 'success');
-            // Adicionamos um pequeno delay para o usuário ver a mensagem antes de redirecionar
-            setTimeout(() => {
-                window.location.href = 'login.html'; // Redireciona para a página de login
-            }, 2000); // 2 segundos de delay
-            
-        } catch (error) {
-            console.error("Erro ao registrar:", error);
-            let errorMessage = "Ocorreu um erro ao registrar. Tente novamente.";
-            switch (error.code) {
-                case 'auth/email-already-in-use':
-                    errorMessage = 'Este email já está em uso. Tente fazer login ou use outro email.';
-                    break;
-                case 'auth/invalid-email':
-                    errorMessage = 'Formato de email inválido.';
-                    break;
-                case 'auth/weak-password':
-                    errorMessage = 'Senha muito fraca. Por favor, use uma senha mais forte.';
-                    break;
-                case 'auth/operation-not-allowed':
-                    // Este é um erro CRÍTICO que significa que o provedor Email/Password não está ativado no Firebase Console.
-                    errorMessage = 'Erro interno: A operação de email/senha não está permitida. Por favor, ative-a no Firebase Console (Autenticação > Métodos de Login).';
-                    break;
-                default:
-                    errorMessage = 'Erro desconhecido. Verifique sua conexão e tente novamente. Código: ' + error.code;
-            }
-            showFeedbackMessage('register-error-message', errorMessage, 'error');
-        }
-    });
-}
-
-// =========================================================
-// Lógica de Login (login.html)
-// =========================================================
-const loginBtn = document.getElementById('login-btn');
-if (loginBtn) {
-    loginBtn.addEventListener('click', async () => {
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value.trim();
-
-        clearFeedbackMessage('login-error-message'); // Limpa antes de exibir nova
-
-        if (!email || !password) {
-            showFeedbackMessage('login-error-message', 'Por favor, preencha todos os campos.', 'error');
-            return;
-        }
-
-        try {
-            // Faz o login do usuário no Firebase Authentication
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // Busca o perfil do usuário no Firestore para verificar a função (role)
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
-
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                if (userData.role === 'admin') {
-                    // Se for admin, redireciona para o painel de administração
-                    showFeedbackMessage('login-error-message', 'Login de administrador realizado com sucesso! Redirecionando...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'admin-dashboard.html'; // Você criará esta página depois
-                    }, 1500);
-                } else {
-                    // Se for cliente, redireciona para a página principal da loja
-                    showFeedbackMessage('login-error-message', 'Login realizado com sucesso! Redirecionando para a loja...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'index.html'; // Sua página principal da loja
-                    }, 1500);
-                }
-            } else {
-                // Caso o documento do usuário não exista no Firestore (improvável após o registro)
-                console.warn("Documento de usuário não encontrado no Firestore para UID:", user.uid);
-                showFeedbackMessage('login-error-message', 'Erro ao carregar perfil do usuário. Tente novamente.', 'error');
-                await signOut(auth); // Desloga para evitar problemas
-            }
-
-        } catch (error) {
-            console.error("Erro ao fazer login:", error);
-            let errorMessage = "Erro ao fazer login. Verifique seu email e senha.";
-            switch (error.code) {
-                case 'auth/invalid-email':
-                    errorMessage = 'Formato de email inválido.';
-                    break;
-                case 'auth/user-disabled':
-                    errorMessage = 'Sua conta foi desativada. Entre em contato com o suporte.';
-                    break;
-                case 'auth/user-not-found':
-                case 'auth/wrong-password':
-                    errorMessage = 'Email ou senha incorretos.';
-                    break;
-                case 'auth/operation-not-allowed':
-                    // Este é um erro CRÍTICO que significa que o provedor Email/Password não está ativado no Firebase Console.
-                    errorMessage = 'Erro interno: A operação de email/senha não está permitida. Por favor, ative-a no Firebase Console (Autenticação > Métodos de Login).';
-                    break;
-                default:
-                    errorMessage = 'Erro desconhecido. Tente novamente. Código: ' + error.code;
-            }
-            showFeedbackMessage('login-error-message', errorMessage, 'error');
-        }
-    });
-}
-
-// =========================================================
-// Lógica de Redefinição de Senha (login.html)
-// =========================================================
+// Pega os elementos do HTML
+const loginEmailInput = document.getElementById('login-email');
+const loginPasswordInput = document.getElementById('login-password');
+const loginButton = document.getElementById('login-btn');
+const errorMessageElement = document.getElementById('login-error-message');
 const forgotPasswordLink = document.getElementById('forgot-password-link');
-if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value.trim();
-        clearFeedbackMessage('login-error-message');
 
-        if (!email) {
-            showFeedbackMessage('login-error-message', 'Por favor, digite seu email para redefinir a senha.', 'error');
-            return;
-        }
-
-        try {
-            await sendPasswordResetEmail(auth, email);
-            showFeedbackMessage('login-error-message', 'Um link para redefinir a senha foi enviado para o seu email. Verifique sua caixa de entrada (e spam)!', 'success');
-        } catch (error) {
-            console.error("Erro ao enviar email de redefinição de senha:", error);
-            let errorMessage = "Erro ao enviar email de redefinição. Tente novamente.";
-            switch (error.code) {
-                case 'auth/invalid-email':
-                    errorMessage = 'Formato de email inválido.';
-                    break;
-                case 'auth/user-not-found':
-                    errorMessage = 'Nenhuma conta encontrada com este email.';
-                    break;
-                default:
-                    errorMessage = 'Erro desconhecido. Tente novamente. Código: ' + error.code;
-            }
-            showFeedbackMessage('login-error-message', errorMessage, 'error');
-        }
-    });
-}
-
-// =========================================================
-// Lógica de Logout (Pode ser adicionado no index.html ou admin-dashboard.html)
-// =========================================================
-window.logoutUser = async function() {
+// Função para verificar a função (role) do usuário no Firestore
+const checkUserRole = async (user) => {
+    // Cria uma referência para o documento do usuário na coleção 'users'
+    const userDocRef = doc(db, "users", user.uid);
     try {
-        await signOut(auth);
-        alert('Você foi desconectado.'); // Mantive o alert aqui por ser uma ação menos crítica
-        window.location.href = 'login.html'; // Redireciona para a página de login após o logout
+        const docSnap = await getDoc(userDocRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            // Verifica se a função do usuário é 'admin'
+            if (userData.role === 'admin') {
+                console.log('Acesso de administrador concedido.');
+                window.location.href = 'admin.html'; // Redireciona para a página de admin
+            } else {
+                errorMessageElement.textContent = 'Acesso negado. Você não tem permissão de administrador.';
+            }
+        } else {
+            // Documento do usuário não encontrado no Firestore
+            errorMessageElement.textContent = 'Acesso negado. Perfil de usuário não encontrado.';
+        }
     } catch (error) {
-        console.error("Erro ao fazer logout:", error);
-        alert('Erro ao fazer logout. Tente novamente.');
+        console.error("Erro ao verificar a função do usuário:", error);
+        errorMessageElement.textContent = 'Erro ao verificar permissões.';
     }
 };
 
-// =========================================================
-// Gerenciamento de Estado de Autenticação (Pode ser usado em qualquer página)
-// =========================================================
-onAuthStateChanged(auth, async (user) => {
-    // Este bloco é executado sempre que o estado de autenticação muda (login/logout)
 
-    // Exemplo: Se você tiver um link de "Login" e "Registrar" e um botão de "Sair"
-    // no seu header (index.html), você pode controlá-los aqui.
-    const headerAuthLinks = document.getElementById('header-auth-links'); // Crie uma div com este ID no seu header
-    if (headerAuthLinks) {
-        if (user) {
-            // Usuário logado
-            const userDocRef = doc(db, 'users', user.uid);
-            const userDocSnap = await getDoc(userDocRef);
+// Adiciona um "ouvinte" para o clique no botão de login
+if (loginButton) {
+    loginButton.addEventListener('click', () => {
+        const email = loginEmailInput.value;
+        const password = loginPasswordInput.value;
+        errorMessageElement.textContent = ''; // Limpa mensagens de erro antigas
 
-            let userName = user.email; // Valor padrão, caso o nome não seja encontrado
-            let userRole = 'customer'; // Valor padrão
-
-            if (userDocSnap.exists()) {
-                const userData = userDocSnap.data();
-                userName = userData.name || user.email;
-                userRole = userData.role || 'customer';
-            }
-
-            let adminLink = '';
-            // Verifique se o usuário é admin ANTES de mostrar o link para o painel
-            if (userRole === 'admin') {
-                adminLink = '<a href="admin-dashboard.html" style="margin-left: 15px; color: var(--cor-branca); text-decoration: none; font-weight: 600;">Painel Admin</a>';
-            }
-
-            headerAuthLinks.innerHTML = `
-                <span style="color: var(--cor-branca); margin-right: 15px;">Olá, ${userName}!</span>
-                ${adminLink}
-                <button onclick="logoutUser()" style="background-color: var(--cor-branca); color: var(--cor-primaria); border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: background-color 0.3s ease;">Sair</button>
-            `;
-        } else {
-            // Usuário deslogado
-            headerAuthLinks.innerHTML = `
-                <a href="login.html" style="color: var(--cor-branca); text-decoration: none; margin-right: 15px; font-weight: 600;">Login</a>
-                <a href="register.html" style="color: var(--cor-branca); text-decoration: none; font-weight: 600;">Registrar</a>
-            `;
+        if (!email || !password) {
+            errorMessageElement.textContent = 'Por favor, preencha o e-mail e a senha.';
+            return;
         }
-    }
-});
+
+        // Tenta fazer o login com o Firebase Auth
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Login bem-sucedido, agora verifica a função do usuário
+                console.log('Login realizado com sucesso, verificando função...', userCredential.user.uid);
+                checkUserRole(userCredential.user);
+            })
+            .catch((error) => {
+                // Ocorreu um erro no login
+                console.error('Erro no login:', error.code, error.message);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    errorMessageElement.textContent = 'E-mail ou senha inválidos.';
+                } else {
+                    errorMessageElement.textContent = 'Ocorreu um erro ao tentar fazer login.';
+                }
+            });
+    });
+}
+
+// Adiciona a funcionalidade de "Esqueci a senha"
+if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const email = loginEmailInput.value;
+
+        if (!email) {
+            alert('Por favor, digite seu e-mail no campo correspondente para redefinir a senha.');
+            return;
+        }
+
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                alert('E-mail de redefinição de senha enviado! Verifique sua caixa de entrada.');
+            })
+            .catch((error) => {
+                console.error('Erro ao enviar e-mail de redefinição:', error);
+                alert('Erro ao enviar e-mail de redefinição. Verifique se o e-mail está correto.');
+            });
+    });
+}

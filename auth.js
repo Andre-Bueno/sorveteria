@@ -1,90 +1,161 @@
+// auth.js
+
 // Importe as funções necessárias dos SDKs do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import {
     getAuth,
+    // FUNÇÕES DE CADASTRO E LOGIN
+    createUserWithEmailAndPassword, // <-- ADICIONADO PARA CADASTRO
     signInWithEmailAndPassword,
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // <-- ADICIONADO setDoc
 
-// A configuração do seu aplicativo da web do Firebase
+// A configuração do seu aplicativo da web do Firebase (mantenha a sua)
 const firebaseConfig = {
-    apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
-    authDomain: "bdsorveteria-2690d.firebaseapp.com",
-    projectId: "bdsorveteria-2690d",
-    storageBucket: "bdsorveteria-2690d.firebasestorage.app",
-    messagingSenderId: "1004178621874",
-    appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
-    measurementId: "G-SMW22TX942"
+    apiKey: "AIzaSyBl4eXhkSPJMNXIMShKH2d447_q3kd2fO8", // Cuidado ao expor sua chave. Considere usar regras de segurança.
+    authDomain: "mvpsorvetria.firebaseapp.com",
+    projectId: "mvpsorvetria",
+    storageBucket: "mvpsorvetria.firebasestorage.app",
+    messagingSenderId: "976443256656",
+    appId: "1:976443256656:web:e71c8567f66e5d54320655",
+    measurementId: "G-55TYKSB5WN"
 };
 
 // Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app); // Inicializa o Firestore
+const db = getFirestore(app);
 
-// --- LÓGICA DA PÁGINA DE LOGIN ---
+// ==========================================================
+// --- LÓGICA DA PÁGINA DE CADASTRO (NOVO CÓDIGO) ---
+// ==========================================================
 
-// Pega os elementos do HTML
+// Pega os elementos da página de CADASTRO
+const registerNameInput = document.getElementById('register-name');
+const registerEmailInput = document.getElementById('register-email');
+const registerPasswordInput = document.getElementById('register-password');
+const registerConfirmPasswordInput = document.getElementById('register-confirm-password');
+const registerButton = document.getElementById('register-btn');
+const registerErrorMessage = document.getElementById('register-error-message');
+
+// Adiciona o "ouvinte" para o clique no botão de REGISTRAR
+// O 'if' garante que este código só execute se o botão existir na página
+if (registerButton) {
+    registerButton.addEventListener('click', () => {
+        const name = registerNameInput.value.trim();
+        const email = registerEmailInput.value.trim();
+        const password = registerPasswordInput.value;
+        const confirmPassword = registerConfirmPasswordInput.value;
+
+        registerErrorMessage.textContent = ''; // Limpa erros
+
+        // Validações
+        if (!name || !email || !password || !confirmPassword) {
+            registerErrorMessage.textContent = 'Por favor, preencha todos os campos.';
+            return;
+        }
+        if (password !== confirmPassword) {
+            registerErrorMessage.textContent = 'As senhas não coincidem.';
+            return;
+        }
+        if (password.length < 6) {
+            registerErrorMessage.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+            return;
+        }
+
+        // Tenta criar o usuário com o Firebase Auth
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log('Usuário criado com sucesso no Auth:', user.uid);
+                
+                // Agora, salve as informações adicionais (nome, função) no Firestore
+                // Usamos setDoc para criar um novo documento para este usuário
+                return setDoc(doc(db, "users", user.uid), {
+                    name: name,
+                    email: email,
+                    role: 'user' // Define uma função padrão. Mude para 'admin' se necessário.
+                });
+            })
+            .then(() => {
+                console.log('Dados do usuário salvos no Firestore!');
+                alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
+                window.location.href = 'login.html'; // Redireciona para a página de login
+            })
+            .catch((error) => {
+                console.error('Erro no cadastro:', error.code, error.message);
+                if (error.code === 'auth/email-already-in-use') {
+                    registerErrorMessage.textContent = 'Este e-mail já está em uso.';
+                } else if (error.code === 'auth/invalid-email') {
+                    registerErrorMessage.textContent = 'O formato do e-mail é inválido.';
+                } else {
+                    registerErrorMessage.textContent = 'Ocorreu um erro ao tentar criar a conta.';
+                }
+            });
+    });
+}
+
+
+// ==========================================================
+// --- LÓGICA DA PÁGINA DE LOGIN (SEU CÓDIGO ORIGINAL) ---
+// ==========================================================
+
+// Pega os elementos da página de LOGIN
 const loginEmailInput = document.getElementById('login-email');
 const loginPasswordInput = document.getElementById('login-password');
 const loginButton = document.getElementById('login-btn');
-const errorMessageElement = document.getElementById('login-error-message');
+const loginErrorMessage = document.getElementById('login-error-message');
 const forgotPasswordLink = document.getElementById('forgot-password-link');
 
 // Função para verificar a função (role) do usuário no Firestore
 const checkUserRole = async (user) => {
-    // Cria uma referência para o documento do usuário na coleção 'users'
     const userDocRef = doc(db, "users", user.uid);
     try {
         const docSnap = await getDoc(userDocRef);
-
         if (docSnap.exists()) {
             const userData = docSnap.data();
-            // Verifica se a função do usuário é 'admin'
             if (userData.role === 'admin') {
                 console.log('Acesso de administrador concedido.');
-                window.location.href = 'admin.html'; // Redireciona para a página de admin
+                window.location.href = 'admin.html';
             } else {
-                errorMessageElement.textContent = 'Acesso negado. Você não tem permissão de administrador.';
+                loginErrorMessage.textContent = 'Acesso negado. Você não tem permissão de administrador.';
+                auth.signOut(); // Desloga o usuário sem permissão
             }
         } else {
-            // Documento do usuário não encontrado no Firestore
-            errorMessageElement.textContent = 'Acesso negado. Perfil de usuário não encontrado.';
+            loginErrorMessage.textContent = 'Acesso negado. Perfil de usuário não encontrado.';
+            auth.signOut();
         }
     } catch (error) {
         console.error("Erro ao verificar a função do usuário:", error);
-        errorMessageElement.textContent = 'Erro ao verificar permissões.';
+        loginErrorMessage.textContent = 'Erro ao verificar permissões.';
+        auth.signOut();
     }
 };
-
 
 // Adiciona um "ouvinte" para o clique no botão de login
 if (loginButton) {
     loginButton.addEventListener('click', () => {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
-        errorMessageElement.textContent = ''; // Limpa mensagens de erro antigas
+        loginErrorMessage.textContent = '';
 
         if (!email || !password) {
-            errorMessageElement.textContent = 'Por favor, preencha o e-mail e a senha.';
+            loginErrorMessage.textContent = 'Por favor, preencha o e-mail e a senha.';
             return;
         }
 
-        // Tenta fazer o login com o Firebase Auth
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                // Login bem-sucedido, agora verifica a função do usuário
                 console.log('Login realizado com sucesso, verificando função...', userCredential.user.uid);
                 checkUserRole(userCredential.user);
             })
             .catch((error) => {
-                // Ocorreu um erro no login
                 console.error('Erro no login:', error.code, error.message);
-                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-                    errorMessageElement.textContent = 'E-mail ou senha inválidos.';
+                if (error.code === 'auth/invalid-credential') {
+                    loginErrorMessage.textContent = 'E-mail ou senha inválidos.';
                 } else {
-                    errorMessageElement.textContent = 'Ocorreu um erro ao tentar fazer login.';
+                    loginErrorMessage.textContent = 'Ocorreu um erro ao tentar fazer login.';
                 }
             });
     });
@@ -95,12 +166,10 @@ if (forgotPasswordLink) {
     forgotPasswordLink.addEventListener('click', (e) => {
         e.preventDefault();
         const email = loginEmailInput.value;
-
         if (!email) {
             alert('Por favor, digite seu e-mail no campo correspondente para redefinir a senha.');
             return;
         }
-
         sendPasswordResetEmail(auth, email)
             .then(() => {
                 alert('E-mail de redefinição de senha enviado! Verifique sua caixa de entrada.');

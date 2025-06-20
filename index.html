@@ -1284,16 +1284,20 @@
     }
 
     .login-icon {
-    width: 60px;  /* Ajuste o tamanho se precisar */
-    height: 60px; /* Força a mesma altura para garantir o alinhamento */
-    vertical-align: middle; /* Ajuda no alinhamento com outros itens */
-}
+      width: 60px;
+      /* Ajuste o tamanho se precisar */
+      height: 60px;
+      /* Força a mesma altura para garantir o alinhamento */
+      vertical-align: middle;
+      /* Ajuda no alinhamento com outros itens */
+    }
 
-#login-icon-container {
-    display: flex;
-    align-items: center;
-    margin-left: 2px; /* Adiciona um espaço à esquerda de cada ícone */
-}
+    #login-icon-container {
+      display: flex;
+      align-items: center;
+      margin-left: 2px;
+      /* Adiciona um espaço à esquerda de cada ícone */
+    }
   </style>
 </head>
 
@@ -1318,7 +1322,7 @@
         <span class="cart-emoji">🛒</span><span id="contador-carrinho-header">0</span>
       </div>
       <div id="login-icon-container">
-        <a href='https://andre-bueno.github.io/sorveteria/login.html'>
+        <a href='/Sorveteria/login.html'>
           <img src="https://cdn-icons-png.flaticon.com/256/5087/5087579.png" alt="Ícone de Login" class="login-icon">
         </a>
       </div>
@@ -1457,15 +1461,14 @@
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
-      authDomain: "bdsorveteria-2690d.firebaseapp.com",
-      projectId: "bdsorveteria-2690d",
-      storageBucket: "bdsorveteria-2690d.appspot.com",
-      messagingSenderId: "1004178621874",
-      appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
-      measurementId: "G-SMW22TX942"
+      apiKey: "AIzaSyBl4eXhkSPJMNXIMShKH2d447_q3kd2fO8",
+      authDomain: "mvpsorvetria.firebaseapp.com",
+      projectId: "mvpsorvetria",
+      storageBucket: "mvpsorvetria.firebasestorage.app",
+      messagingSenderId: "976443256656",
+      appId: "1:976443256656:web:e71c8567f66e5d54320655",
+      measurementId: "G-55TYKSB5WN"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     // --- FIM: CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE ---

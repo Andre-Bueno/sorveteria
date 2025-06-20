@@ -13,7 +13,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f7fafc; /* Um cinza um pouco mais claro */
+            background-color: #f7fafc;
         }
 
         .modal-backdrop {
@@ -25,19 +25,21 @@
 <body>
 
     <header class="bg-purple-800 text-white shadow-lg sticky top-0 z-40">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-            <div class="flex items-center gap-4">
-                <img src="https://trilhasdaamazonia.com.br/uploads/thumbs/159x159/identidade/logo.png" alt="Logo Trilhas da Amazônia" class="h-14 w-14 rounded-full border-2 border-purple-400">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-3">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <img src="https://trilhasdaamazonia.com.br/uploads/thumbs/159x159/identidade/logo.png"
+                    alt="Logo Trilhas da Amazônia"
+                    class="h-12 w-12 sm:h-14 sm:w-14 rounded-full border-2 border-purple-400">
                 <div>
-                    <h1 class="text-xl font-bold tracking-wider">Trilhas da Amazônia Triunfo</h1>
-                    <p class="text-sm text-purple-300">Painel Administrativo</p>
+                    <h1 class="text-base sm:text-xl font-bold tracking-wider">Trilhas da Amazônia</h1>
+                    <p class="text-xs sm:text-sm text-purple-300">Painel Administrativo</p>
                 </div>
             </div>
-
             <div>
-                <button id="logoutButton" class="flex items-center px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition-colors duration-300">
-                    <i class="fas fa-sign-out-alt mr-2"></i>
-                    Sair
+                <button id="logoutButton"
+                    class="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-purple-600 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition-colors duration-300">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden sm:inline ml-2">Sair</span>
                 </button>
             </div>
         </div>
@@ -59,19 +61,22 @@
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
                         <input id="productImage" type="url" placeholder="URL da Imagem"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                        
+
                         <input id="productCategory" type="text" placeholder="Categoria (ex: Açaís, Mais Vendidos)"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
 
                         <div>
                             <label class="block mb-2 font-semibold text-gray-700">Vincular Adicionais:</label>
-                            <div id="productAdicionaisContainer" class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
+                            <div id="productAdicionaisContainer"
+                                class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
                             </div>
                         </div>
 
                         <div class="flex items-center">
-                            <input id="productAvailable" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
-                            <label for="productAvailable" class="ml-2 block text-sm font-medium text-gray-900">Disponível para venda</label>
+                            <input id="productAvailable" type="checkbox"
+                                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+                            <label for="productAvailable"
+                                class="ml-2 block text-sm font-medium text-gray-900">Disponível para venda</label>
                         </div>
 
                         <button type="submit"
@@ -89,7 +94,7 @@
             </section>
 
             <section id="adicionais-section">
-                 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Adicionar Item Adicional</h2>
                     <form id="addAdicionalForm" class="space-y-4">
                         <input id="adicionalName" type="text" placeholder="Nome do Adicional (ex: Granola)"
@@ -121,25 +126,32 @@
                 <input type="hidden" id="editType">
                 <div class="space-y-4">
                     <input id="editName" type="text" placeholder="Nome" class="w-full p-3 border rounded-lg" required>
-                    
+
                     <div id="edit-product-fields">
-                        <textarea id="editDescription" placeholder="Descrição" class="w-full p-3 border rounded-lg"></textarea>
-                        <input id="editImage" type="url" placeholder="URL da Imagem" class="w-full p-3 border rounded-lg mt-4">
-                        <input id="editCategory" type="text" placeholder="Categoria" class="w-full p-3 border rounded-lg mt-4">
-                        
+                        <textarea id="editDescription" placeholder="Descrição"
+                            class="w-full p-3 border rounded-lg"></textarea>
+                        <input id="editImage" type="url" placeholder="URL da Imagem"
+                            class="w-full p-3 border rounded-lg mt-4">
+                        <input id="editCategory" type="text" placeholder="Categoria"
+                            class="w-full p-3 border rounded-lg mt-4">
+
                         <div class="mt-4">
                             <label class="block mb-2 font-semibold text-gray-700">Adicionais Vinculados:</label>
-                            <div id="editAdicionaisContainer" class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
+                            <div id="editAdicionaisContainer"
+                                class="w-full p-2 border rounded-lg h-40 overflow-y-auto bg-gray-50">
                             </div>
                         </div>
 
                         <div class="flex items-center mt-4">
-                            <input id="editAvailable" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                            <label for="editAvailable" class="ml-2 block text-sm font-medium text-gray-900">Disponível para venda</label>
+                            <input id="editAvailable" type="checkbox"
+                                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="editAvailable" class="ml-2 block text-sm font-medium text-gray-900">Disponível
+                                para venda</label>
                         </div>
                     </div>
-                    
-                    <input id="editPrice" type="number" step="0.01" placeholder="Preço" class="w-full p-3 border rounded-lg" required>
+
+                    <input id="editPrice" type="number" step="0.01" placeholder="Preço"
+                        class="w-full p-3 border rounded-lg" required>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
                     <button type="button" onclick="hideModal()"
@@ -158,18 +170,45 @@
         import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBerEbWZfzczjrvX7TK5nS6MfeRU-qJ-HU",
-            authDomain: "bdsorveteria-2690d.firebaseapp.com",
-            projectId: "bdsorveteria-2690d",
-            storageBucket: "bdsorveteria-2690d.firebasestorage.app",
-            messagingSenderId: "1004178621874",
-            appId: "1:1004178621874:web:d8d83047045d2ba93e50ab",
-            measurementId: "G-SMW22TX942"
+            apiKey: "AIzaSyBl4eXhkSPJMNXIMShKH2d447_q3kd2fO8",
+            authDomain: "mvpsorvetria.firebaseapp.com",
+            projectId: "mvpsorvetria",
+            storageBucket: "mvpsorvetria.firebasestorage.app",
+            messagingSenderId: "976443256656",
+            appId: "1:976443256656:web:e71c8567f66e5d54320655",
+            measurementId: "G-55TYKSB5WN"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // --- INACTIVITY LOGOUT SYSTEM ---
+        let inactivityTimer;
+
+        const logoutDueToInactivity = () => {
+            signOut(auth).then(() => {
+                alert('Você foi desconectado por inatividade.');
+                window.location.href = 'login.html';
+            }).catch(error => {
+                console.error('Error signing out due to inactivity:', error);
+                window.location.href = 'login.html';
+            });
+        };
+
+        const resetInactivityTimer = () => {
+            clearTimeout(inactivityTimer);
+            // Define o tempo de inatividade para 15 minutos (15 * 60 * 1000 ms)
+            inactivityTimer = setTimeout(logoutDueToInactivity, 900000);
+        };
+
+        const setupInactivityListener = () => {
+            const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+            activityEvents.forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            resetInactivityTimer(); // Inicia o timer pela primeira vez
+        };
 
         // --- AUTHENTICATION ---
         onAuthStateChanged(auth, async (user) => {
@@ -179,6 +218,7 @@
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists() && docSnap.data().role === 'admin') {
                         listenToData();
+                        setupInactivityListener(); // Inicia o detector de inatividade para o admin
                     } else {
                         window.location.href = 'login.html';
                     }
@@ -209,7 +249,7 @@
             products.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'bg-white rounded-lg shadow-md p-4 flex items-start gap-4';
-                
+
                 const adicionaisText = p.adicionais_disponiveis && p.adicionais_disponiveis.length > 0
                     ? p.adicionais_disponiveis.join(', ')
                     : 'Nenhum';
@@ -272,7 +312,7 @@
                 const adicionais = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 window.allAdicionais = adicionais;
                 renderAdicionais(adicionais.sort((a, b) => a.nome.localeCompare(b.nome)));
-                
+
                 productAdicionaisContainer.innerHTML = '';
                 editAdicionaisContainer.innerHTML = '';
                 adicionais.forEach((ad, index) => {
@@ -293,7 +333,7 @@
         document.getElementById('addProductForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const nomeProduto = document.getElementById('productName').value;
-            
+
             const selectedAdicionais = [];
             document.querySelectorAll('#productAdicionaisContainer input[type="checkbox"]:checked').forEach(checkbox => {
                 selectedAdicionais.push(checkbox.value);
@@ -313,7 +353,7 @@
             try {
                 await setDoc(doc(db, "produtos", nomeProduto), formData);
                 e.target.reset();
-            } catch (error) { 
+            } catch (error) {
                 alert("Erro ao adicionar o produto. Verifique o console para mais detalhes.");
             }
         });
@@ -354,7 +394,7 @@
             const item = isProduct ? window.allProducts.find(p => p.id === id) : window.allAdicionais.find(a => a.id === id);
 
             if (!item) return;
-            
+
             editForm.elements.editId.value = id;
             editForm.elements.editType.value = type;
             editForm.elements.editName.value = item.nome;
@@ -368,8 +408,8 @@
                 editForm.elements.editDescription.value = item.descricao || '';
                 editForm.elements.editImage.value = item.imagen_url || '';
                 editForm.elements.editCategory.value = item.categoria || '';
-                editForm.elements.editAvailable.checked = item.disponivel === true; 
-                
+                editForm.elements.editAvailable.checked = item.disponivel === true;
+
                 const vinculados = item.adicionais_disponiveis || [];
                 document.querySelectorAll('#editAdicionaisContainer input[type="checkbox"]').forEach(checkbox => {
                     checkbox.checked = vinculados.includes(checkbox.value);
@@ -409,7 +449,7 @@
             try {
                 await updateDoc(docRef, dataToUpdate);
                 hideModal();
-            } catch (error) { 
+            } catch (error) {
                 alert('Ocorreu um erro ao salvar as alterações. Verifique o console.');
             }
         });
@@ -418,7 +458,7 @@
         document.getElementById('logoutButton').addEventListener('click', () => {
             signOut(auth).then(() => {
                 console.log('Usuário deslogado com sucesso.');
-                window.location.href = 'login.html';
+                window.location.href = '/'; // Redireciona para a página inicial
             }).catch((error) => {
                 console.error('Erro ao fazer logout:', error);
                 alert('Ocorreu um erro ao tentar sair.');

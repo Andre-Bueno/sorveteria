@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,12 +106,15 @@
         }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Seu Email">
-        <input type="password" id="login-password" placeholder="Sua Senha">
-        <button id="login-btn">Entrar</button>
+        <form id="login-form">
+            <input type="email" id="login-email" placeholder="Seu Email" required>
+            <input type="password" id="login-password" placeholder="Sua Senha" required>
+            <button type="submit" id="login-btn">Entrar</button>
+        </form>
         <p id="login-error-message" class="error-message"></p>
         <p class="message">Não tem uma conta? <a href="register.html">Crie uma aqui</a></p>
         <p class="message"><a href="#" id="forgot-password-link">Esqueceu a senha?</a></p>
@@ -118,4 +122,5 @@
 
     <script type="module" src="auth.js"></script>
 </body>
+
 </html>

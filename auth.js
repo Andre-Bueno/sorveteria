@@ -13,14 +13,23 @@ import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/fireb
 
 // A configuração do seu aplicativo da web do Firebase (mantenha a sua)
 const firebaseConfig = {
-    apiKey: "AIzaSyBl4eXhkSPJMNXIMShKH2d447_q3kd2fO8", // Cuidado ao expor sua chave. Considere usar regras de segurança.
-    authDomain: "mvpsorvetria.firebaseapp.com",
-    projectId: "mvpsorvetria",
-    storageBucket: "mvpsorvetria.firebasestorage.app",
-    messagingSenderId: "976443256656",
-    appId: "1:976443256656:web:e71c8567f66e5d54320655",
-    measurementId: "G-55TYKSB5WN"
+
+    apiKey: "AIzaSyBisqvn25XkuGEqAzrU3bsxSyikmT1ty_0",
+
+    authDomain: "trilhadaiatriunfo.firebaseapp.com",
+
+    projectId: "trilhadaiatriunfo",
+
+    storageBucket: "trilhadaiatriunfo.firebasestorage.app",
+
+    messagingSenderId: "160431423842",
+
+    appId: "1:160431423842:web:15888a0ebd263941e02c3b",
+
+    measurementId: "G-F3CG33WF8B"
+
 };
+
 
 // Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
@@ -69,7 +78,7 @@ if (registerButton) {
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log('Usuário criado com sucesso no Auth:', user.uid);
-                
+
                 // Agora, salve as informações adicionais (nome, função) no Firestore
                 // Usamos setDoc para criar um novo documento para este usuário
                 return setDoc(doc(db, "users", user.uid), {
@@ -134,10 +143,15 @@ const checkUserRole = async (user) => {
 };
 
 // Adiciona um "ouvinte" para o clique no botão de login
-if (loginButton) {
-    loginButton.addEventListener('click', () => {
-        const email = loginEmailInput.value;
+const loginForm = document.getElementById('login-form');
+
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Impede o comportamento padrão do formulário
+
+        const email = loginEmailInput.value.trim();
         const password = loginPasswordInput.value;
+
         loginErrorMessage.textContent = '';
 
         if (!email || !password) {

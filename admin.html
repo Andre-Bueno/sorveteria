@@ -65,10 +65,12 @@
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
 
                         <input id="productImage" type="file" accept="image/*"
-                            class="w-full p-2 border rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
-                        
+                            class="w-full p-2 border rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            required>
+
                         <div id="uploadProgressContainer" class="hidden w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                            <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full progress-bar"
+                                style="width: 0%"></div>
                         </div>
                         <p id="uploadStatus" class="text-center text-sm font-medium text-gray-600"></p>
 
@@ -90,7 +92,8 @@
                         </div>
 
                         <button id="addProductButton" type="submit"
-                            class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400">
+                            class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            disabled>
                             <i class="fas fa-plus-circle mr-2"></i>Adicionar Produto
                         </button>
                     </form>
@@ -99,7 +102,7 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Lista de Produtos</h2>
                     <div id="productList" class="space-y-4">
-                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -111,8 +114,9 @@
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500" required>
                         <input id="adicionalPrice" type="number" step="0.01" placeholder="Preço (ex: 2.50)"
                             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500" required>
-                        <button type="submit"
-                            class="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        <button id="addAdicionalButton" type="submit"
+                            class="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            disabled>
                             <i class="fas fa-plus-circle mr-2"></i>Adicionar Item
                         </button>
                     </form>
@@ -121,7 +125,7 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Itens Adicionais</h2>
                     <div id="adicionalList" class="space-y-2">
-                         </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -184,7 +188,7 @@
             apiKey: "AIzaSyBisqvn25XkuGEqAzrU3bsxSyikmT1ty_0",
             authDomain: "trilhadaiatriunfo.firebaseapp.com",
             projectId: "trilhadaiatriunfo",
-            storageBucket: "trilhadaiatriunfo.appspot.com",
+            storageBucket: "trilhadaiatriunfo.firebasestorage.app",
             messagingSenderId: "160431423842",
             appId: "1:160431423842:web:15888a0ebd263941e02c3b",
             measurementId: "G-F3CG33WF8B"
@@ -194,6 +198,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
+
+        const addProductButton = document.getElementById('addProductButton');
+        const addAdicionalButton = document.getElementById('addAdicionalButton');
 
         // --- INACTIVITY LOGOUT SYSTEM ---
         let inactivityTimer;
@@ -228,6 +235,10 @@
                 try {
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists() && docSnap.data().role === 'admin') {
+                        // Habilita os botões APÓS confirmar que é admin
+                        addProductButton.disabled = false;
+                        addAdicionalButton.disabled = false;
+
                         listenToData();
                         setupInactivityListener();
                     } else {
@@ -339,11 +350,10 @@
             });
         }
 
-        // --- FORMULÁRIO DE ADICIONAR PRODUTO (LÓGICA ATUALIZADA) ---
+        // --- FORMULÁRIO DE ADICIONAR PRODUTO ---
         document.getElementById('addProductForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const addProductButton = document.getElementById('addProductButton');
+
             const uploadProgressContainer = document.getElementById('uploadProgressContainer');
             const uploadProgressBar = document.getElementById('uploadProgressBar');
             const uploadStatus = document.getElementById('uploadStatus');
@@ -356,16 +366,16 @@
                 alert("Por favor, selecione uma imagem para o produto.");
                 return;
             }
-            
+
             addProductButton.disabled = true;
             uploadStatus.textContent = "Iniciando upload...";
             uploadProgressContainer.classList.remove('hidden');
-            
+
             const fileName = `${Date.now()}-${file.name}`;
             const storageRef = ref(storage, `produtos/${fileName}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
-            uploadTask.on('state_changed', 
+            uploadTask.on('state_changed',
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     uploadProgressBar.style.width = progress + '%';
@@ -382,7 +392,7 @@
                     uploadStatus.textContent = "Imagem enviada! Obtendo URL...";
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                         uploadStatus.textContent = "URL obtida! Salvando produto...";
-                        
+
                         const selectedAdicionais = [];
                         document.querySelectorAll('#productAdicionaisContainer input[type="checkbox"]:checked').forEach(checkbox => {
                             selectedAdicionais.push(checkbox.value);
@@ -398,16 +408,14 @@
                             disponivel: document.getElementById('productAvailable').checked,
                             createdAt: serverTimestamp()
                         };
-                        
+
                         try {
                             // ATENÇÃO: Esta lógica salva na coleção raiz 'produtos'.
-                            // Se sua estrutura de produtos for aninhada (produtos/categoria/produtos),
-                            // você precisará ajustar o 'docRef' abaixo.
                             await setDoc(doc(db, "produtos", nomeProduto), formData);
-                            
+
                             uploadStatus.textContent = "Produto adicionado com sucesso!";
                             document.getElementById('addProductForm').reset();
-                            
+
                             setTimeout(() => {
                                 uploadProgressContainer.classList.add('hidden');
                                 uploadStatus.textContent = "";
@@ -438,7 +446,6 @@
                 e.target.reset();
             } catch (error) { console.error("Error adding adicional: ", error); }
         });
-
 
         // --- FUNÇÕES DE EDITAR, DELETAR E LOGOUT ---
         window.deleteItem = async (type, id) => {
@@ -525,7 +532,7 @@
         document.getElementById('logoutButton').addEventListener('click', () => {
             signOut(auth).then(() => {
                 console.log('Usuário deslogado com sucesso.');
-                window.location.href = '/'; 
+                window.location.href = '/';
             }).catch((error) => {
                 console.error('Erro ao fazer logout:', error);
                 alert('Ocorreu um erro ao tentar sair.');
